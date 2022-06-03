@@ -1,4 +1,4 @@
-﻿namespace NSWOF.Domain.Common
+﻿namespace NSUOW.Domain.Common
 {
     public abstract class BaseDomainEntity
     {

@@ -1,6 +1,6 @@
 ﻿using NSUOW.Application.DTOs;
+using NSUOW.Domain;
 using NSUOW.Persistence.Repositories;
-using NSWOF.Domain;
 
 namespace NSUOW.Persistence.Contracts
 {

@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using NSUOW.Application.DTOs.Common;
 using NSUOW.Application.Extensions;
 using NSUOW.Application.Models.Persistence;
+using NSUOW.Domain.Common;
 using NSUOW.Persistence.Contracts;
-using NSWOF.Domain.Common;
 using System.Linq.Expressions;
 
 namespace NSUOW.Persistence.Repositories

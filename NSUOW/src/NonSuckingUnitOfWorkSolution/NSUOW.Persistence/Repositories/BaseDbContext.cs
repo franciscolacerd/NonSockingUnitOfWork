@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NSWOF.Domain.Common;
+using NSUOW.Domain.Common;
 
 namespace NSUOW.Persistence.Repositories
 {

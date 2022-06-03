@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NSUOW.Application\NSUOW.Application.csproj" />
-    <ProjectReference Include="..\NSWOF.Domain\NSWOF.Domain.csproj" />
+    <ProjectReference Include="..\NSUOW.Domain\NSUOW.Domain.csproj" />
   </ItemGroup>
 
 </Project>

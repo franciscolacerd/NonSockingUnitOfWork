@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore.Storage;
 using NSUOW.Application.DTOs;
+using NSUOW.Domain;
 using NSUOW.Persistence.Contracts;
-using NSWOF.Domain;
 using System.Security.Claims;
 
 namespace NSUOW.Persistence.Repositories
