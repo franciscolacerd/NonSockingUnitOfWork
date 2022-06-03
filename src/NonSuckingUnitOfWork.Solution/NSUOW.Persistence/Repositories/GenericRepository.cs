@@ -10,7 +10,7 @@ using System.Linq.Expressions;
 
 namespace NSUOW.Persistence.Repositories
 {
-    public class GenericRepository<TEntity, TDto, TContext> : BaseRepository, IGenericRepository<TEntity, TDto, TContext>
+    public class GenericRepository<TEntity, TDto, TContext> : BaseRepository<TEntity, TContext>, IGenericRepository<TEntity, TDto, TContext>
         where TEntity : BaseDomainEntity
         where TDto : BaseDto
         where TContext : DbContext
@@ -18,7 +18,7 @@ namespace NSUOW.Persistence.Repositories
         private readonly TContext _dbContext;
         protected IMapper _mapper { get; }
 
-        public GenericRepository(TContext dbContext, IMapper mapper)
+        public GenericRepository(TContext dbContext, IMapper mapper) : base(dbContext)
         {
             _dbContext = dbContext;
             _mapper = mapper;
@@ -204,23 +204,6 @@ namespace NSUOW.Persistence.Repositories
                  .FindAsync(new object[] { entity.Id });
 
             await _dbContext.SaveChangesAsync();
-        }
-
-        private IQueryable<TEntity> SetFiltersToQuery(
-            Expression<Func<TEntity, bool>>? predicate,
-            Expression<Func<TEntity, object>>[]? includes)
-        {
-            var dbSet = _dbContext.Set<TEntity>();
-
-            var _query = dbSet.AsNoTracking();
-
-            if (predicate != null)
-                _query = _query.Where(predicate);
-
-            if (includes != null)
-                _query = includes.Aggregate(_query, (current, include) => current.Include(include));
-
-            return _query;
         }
     }
 }
