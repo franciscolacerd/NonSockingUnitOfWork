@@ -1,0 +1,17 @@
+C:\FLACERDA\Utils\NSUOW\src\NonSuckingUnitOfWorkSolution\NSUOW.Persistence\bin\Debug\net6.0\NSUOW.Persistence.deps.json
+C:\FLACERDA\Utils\NSUOW\src\NonSuckingUnitOfWorkSolution\NSUOW.Persistence\bin\Debug\net6.0\NSUOW.Persistence.dll
+C:\FLACERDA\Utils\NSUOW\src\NonSuckingUnitOfWorkSolution\NSUOW.Persistence\bin\Debug\net6.0\NSUOW.Persistence.pdb
+C:\FLACERDA\Utils\NSUOW\src\NonSuckingUnitOfWorkSolution\NSUOW.Persistence\bin\Debug\net6.0\NSUOW.Application.dll
+C:\FLACERDA\Utils\NSUOW\src\NonSuckingUnitOfWorkSolution\NSUOW.Persistence\bin\Debug\net6.0\NSUOW.Application.pdb
+C:\FLACERDA\Utils\NSUOW\src\NonSuckingUnitOfWorkSolution\NSUOW.Persistence\obj\Debug\net6.0\NSUOW.Persistence.csproj.AssemblyReference.cache
+C:\FLACERDA\Utils\NSUOW\src\NonSuckingUnitOfWorkSolution\NSUOW.Persistence\obj\Debug\net6.0\NSUOW.Persistence.GeneratedMSBuildEditorConfig.editorconfig
+C:\FLACERDA\Utils\NSUOW\src\NonSuckingUnitOfWorkSolution\NSUOW.Persistence\obj\Debug\net6.0\NSUOW.Persistence.AssemblyInfoInputs.cache
+C:\FLACERDA\Utils\NSUOW\src\NonSuckingUnitOfWorkSolution\NSUOW.Persistence\obj\Debug\net6.0\NSUOW.Persistence.AssemblyInfo.cs
+C:\FLACERDA\Utils\NSUOW\src\NonSuckingUnitOfWorkSolution\NSUOW.Persistence\obj\Debug\net6.0\NSUOW.Persistence.csproj.CoreCompileInputs.cache
+C:\FLACERDA\Utils\NSUOW\src\NonSuckingUnitOfWorkSolution\NSUOW.Persistence\obj\Debug\net6.0\NSUOW.Persistence.csproj.CopyComplete
+C:\FLACERDA\Utils\NSUOW\src\NonSuckingUnitOfWorkSolution\NSUOW.Persistence\obj\Debug\net6.0\NSUOW.Persistence.dll
+C:\FLACERDA\Utils\NSUOW\src\NonSuckingUnitOfWorkSolution\NSUOW.Persistence\obj\Debug\net6.0\refint\NSUOW.Persistence.dll
+C:\FLACERDA\Utils\NSUOW\src\NonSuckingUnitOfWorkSolution\NSUOW.Persistence\obj\Debug\net6.0\NSUOW.Persistence.pdb
+C:\FLACERDA\Utils\NSUOW\src\NonSuckingUnitOfWorkSolution\NSUOW.Persistence\obj\Debug\net6.0\ref\NSUOW.Persistence.dll
+C:\FLACERDA\Utils\NSUOW\src\NonSuckingUnitOfWorkSolution\NSUOW.Persistence\bin\Debug\net6.0\NSWOF.Domain.dll
+C:\FLACERDA\Utils\NSUOW\src\NonSuckingUnitOfWorkSolution\NSUOW.Persistence\bin\Debug\net6.0\NSWOF.Domain.pdb

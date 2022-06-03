@@ -1,0 +1,12 @@
+C:\FLACERDA\Utils\NSUOW\src\NonSuckingUnitOfWorkSolution\NSUOW.Application\bin\Debug\net6.0\NSUOW.Application.deps.json
+C:\FLACERDA\Utils\NSUOW\src\NonSuckingUnitOfWorkSolution\NSUOW.Application\bin\Debug\net6.0\NSUOW.Application.dll
+C:\FLACERDA\Utils\NSUOW\src\NonSuckingUnitOfWorkSolution\NSUOW.Application\bin\Debug\net6.0\NSUOW.Application.pdb
+C:\FLACERDA\Utils\NSUOW\src\NonSuckingUnitOfWorkSolution\NSUOW.Application\obj\Debug\net6.0\NSUOW.Application.csproj.AssemblyReference.cache
+C:\FLACERDA\Utils\NSUOW\src\NonSuckingUnitOfWorkSolution\NSUOW.Application\obj\Debug\net6.0\NSUOW.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\FLACERDA\Utils\NSUOW\src\NonSuckingUnitOfWorkSolution\NSUOW.Application\obj\Debug\net6.0\NSUOW.Application.AssemblyInfoInputs.cache
+C:\FLACERDA\Utils\NSUOW\src\NonSuckingUnitOfWorkSolution\NSUOW.Application\obj\Debug\net6.0\NSUOW.Application.AssemblyInfo.cs
+C:\FLACERDA\Utils\NSUOW\src\NonSuckingUnitOfWorkSolution\NSUOW.Application\obj\Debug\net6.0\NSUOW.Application.csproj.CoreCompileInputs.cache
+C:\FLACERDA\Utils\NSUOW\src\NonSuckingUnitOfWorkSolution\NSUOW.Application\obj\Debug\net6.0\NSUOW.Application.dll
+C:\FLACERDA\Utils\NSUOW\src\NonSuckingUnitOfWorkSolution\NSUOW.Application\obj\Debug\net6.0\refint\NSUOW.Application.dll
+C:\FLACERDA\Utils\NSUOW\src\NonSuckingUnitOfWorkSolution\NSUOW.Application\obj\Debug\net6.0\NSUOW.Application.pdb
+C:\FLACERDA\Utils\NSUOW\src\NonSuckingUnitOfWorkSolution\NSUOW.Application\obj\Debug\net6.0\ref\NSUOW.Application.dll
