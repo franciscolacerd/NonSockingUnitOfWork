@@ -12,26 +12,26 @@ namespace NSUOW.Persistence.Repositories
     {
         private readonly IMapper _mapper;
 
-        private readonly NsuowContext _context;
+        private readonly NsuowDbContext _context;
 
         private IDbContextTransaction _transaction;
 
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        private GenericRepository<Service, ServiceDto, NsuowContext> _serviceRepository;
+        private GenericRepository<Service, ServiceDto, NsuowDbContext> _serviceRepository;
 
-        private GenericRepository<Volume, VolumeDto, NsuowContext> _volumeRepository;
+        private GenericRepository<Volume, VolumeDto, NsuowDbContext> _volumeRepository;
 
-        public UnitOfWork(NsuowContext context, IHttpContextAccessor httpContextAccessor, IMapper mapper)
+        public UnitOfWork(NsuowDbContext context, IHttpContextAccessor httpContextAccessor, IMapper mapper)
         {
             _mapper = mapper;
             _context = context;
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public GenericRepository<Service, ServiceDto, NsuowContext> ServiceRepository => _serviceRepository ??= new GenericRepository<Service, ServiceDto, NsuowContext>(_context, _mapper);
+        public GenericRepository<Service, ServiceDto, NsuowDbContext> ServiceRepository => _serviceRepository ??= new GenericRepository<Service, ServiceDto, NsuowDbContext>(_context, _mapper);
 
-        public GenericRepository<Volume, VolumeDto, NsuowContext> VolumeRepository => _volumeRepository ??= new GenericRepository<Volume, VolumeDto, NsuowContext>(_context, _mapper);
+        public GenericRepository<Volume, VolumeDto, NsuowDbContext> VolumeRepository => _volumeRepository ??= new GenericRepository<Volume, VolumeDto, NsuowDbContext>(_context, _mapper);
 
         public async Task BeginTransactionAsync(CancellationToken cancellationToken = default)
         {

@@ -1,9 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NSUOW.Persistence;
 using NUnit.Framework;
-using System;
 
 
 namespace ServicesApi.Services.Tests.Strapper
@@ -29,14 +27,7 @@ namespace ServicesApi.Services.Tests.Strapper
 
             var configurationRoot = GetIConfigurationRoot(TestContext.CurrentContext.TestDirectory);
 
-            services.AddDbContext<NsuowContext>(opts => opts.UseSqlServer(configurationRoot.GetConnectionString("DbContext"),
-                options =>
-                {
-                    options.EnableRetryOnFailure(maxRetryCount: 3, maxRetryDelay: TimeSpan.FromSeconds(5), null);
-                    options.CommandTimeout(99999);
-                }));
-
-            services.ConfigurePersistenceServices();
+            services.ConfigurePersistenceServices(configurationRoot);
 
             services.AddSingleton<IConfiguration>(configurationRoot);
 

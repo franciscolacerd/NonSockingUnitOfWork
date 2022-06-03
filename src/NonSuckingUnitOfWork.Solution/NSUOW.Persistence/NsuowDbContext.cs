@@ -4,15 +4,15 @@ using NSUOW.Persistence.Repositories;
 
 namespace NSUOW.Persistence
 {
-    public class NsuowContext : BaseDbContext
+    public class NsuowDbContext : BaseDbContext
     {
-        public NsuowContext(DbContextOptions options) : base(options)
+        public NsuowDbContext(DbContextOptions options) : base(options)
         {
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(NsuowContext).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(NsuowDbContext).Assembly);
         }
 
         public DbSet<Service> Services { get; set; } = null!;
