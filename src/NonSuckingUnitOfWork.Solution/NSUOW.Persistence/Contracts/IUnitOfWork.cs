@@ -4,11 +4,11 @@ using NSUOW.Persistence.Repositories;
 
 namespace NSUOW.Persistence.Contracts
 {
-    public interface IUnitOfWork<TContext> : IDisposable where TContext : BaseDbContext
+    public interface IUnitOfWork : IDisposable
     {
 
-        GenericRepository<Service, ServiceDto, TContext> ServiceRepository { get; }
-        GenericRepository<Volume, VolumeDto, TContext> VolumeRepository { get; }
+        GenericRepository<Service, ServiceDto, NsuowContext> ServiceRepository { get; }
+        GenericRepository<Volume, VolumeDto, NsuowContext> VolumeRepository { get; }
 
         Task BeginTransactionAsync(CancellationToken cancellationToken = default);
         Task CommitTransactionAsync(CancellationToken cancellationToken = default);
