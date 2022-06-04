@@ -18,9 +18,9 @@ namespace NSUOW.Persistence.Repositories
 
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        private GenericRepository<Service, ServiceDto, NsuowDbContext> _serviceRepository;
+        private IGenericRepository<Service, ServiceDto, NsuowDbContext> _serviceRepository;
 
-        private GenericRepository<Volume, VolumeDto, NsuowDbContext> _volumeRepository;
+        private IGenericRepository<Volume, VolumeDto, NsuowDbContext> _volumeRepository;
 
         public UnitOfWork(NsuowDbContext context, IHttpContextAccessor httpContextAccessor, IMapper mapper)
         {
@@ -29,9 +29,9 @@ namespace NSUOW.Persistence.Repositories
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public GenericRepository<Service, ServiceDto, NsuowDbContext> ServiceRepository => _serviceRepository ??= new GenericRepository<Service, ServiceDto, NsuowDbContext>(_context, _mapper);
+        public IGenericRepository<Service, ServiceDto, NsuowDbContext> ServiceRepository => _serviceRepository ??= new GenericRepository<Service, ServiceDto, NsuowDbContext>(_context, _mapper);
 
-        public GenericRepository<Volume, VolumeDto, NsuowDbContext> VolumeRepository => _volumeRepository ??= new GenericRepository<Volume, VolumeDto, NsuowDbContext>(_context, _mapper);
+        public IGenericRepository<Volume, VolumeDto, NsuowDbContext> VolumeRepository => _volumeRepository ??= new GenericRepository<Volume, VolumeDto, NsuowDbContext>(_context, _mapper);
 
         public async Task BeginTransactionAsync(CancellationToken cancellationToken = default)
         {
@@ -52,9 +52,22 @@ namespace NSUOW.Persistence.Repositories
 
         public void Dispose()
         {
-            _transaction?.Dispose();
-            _context.Dispose();
+            Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _transaction?.Dispose();
+                _context.Dispose();
+            }
+        }
+
+        ~UnitOfWork()
+        {
+            Dispose(false);
         }
     }
 }
