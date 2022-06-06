@@ -17,13 +17,13 @@ namespace NSUOW.Persistence.Configurations.Entities
             builder.Property(t => t.Id)
                 .IsRequired()
                 .HasColumnName("VolumeId")
-                .HasColumnType("bigint")
+                .HasColumnType("int")
                 .ValueGeneratedOnAdd();
 
             builder.Property(t => t.ServiceId)
                 .IsRequired()
                 .HasColumnName("ServiceId")
-                .HasColumnType("bigint");
+                .HasColumnType("int");
 
             builder.Property(t => t.VolumeBarCode)
                 .IsRequired()

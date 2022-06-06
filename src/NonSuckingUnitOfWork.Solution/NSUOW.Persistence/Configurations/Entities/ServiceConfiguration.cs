@@ -25,7 +25,7 @@ namespace NSUOW.Persistence.Configurations.Entities
             builder.Property(t => t.Id)
                 .IsRequired()
                 .HasColumnName("ServiceId")
-                .HasColumnType("bigint")
+                .HasColumnType("int")
                 .ValueGeneratedOnAdd();
 
             builder.Property(t => t.ClientReference)
