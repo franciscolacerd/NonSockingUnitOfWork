@@ -6,6 +6,7 @@ using NSUOW.Application.Extensions;
 using NSUOW.Application.Models.Persistence;
 using NSUOW.Domain.Common;
 using NSUOW.Persistence.Contracts;
+using NSUOW.Persistence.Repositories.Common;
 using System.Linq.Expressions;
 
 namespace NSUOW.Persistence.Repositories

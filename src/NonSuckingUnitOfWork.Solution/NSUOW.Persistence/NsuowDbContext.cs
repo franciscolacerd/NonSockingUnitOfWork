@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NSUOW.Domain;
-using NSUOW.Persistence.Repositories;
+using NSUOW.Persistence.Repositories.Common;
 
 namespace NSUOW.Persistence
 {

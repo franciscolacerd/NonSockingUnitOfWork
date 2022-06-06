@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NSUOW.Domain.Common;
 
-namespace NSUOW.Persistence.Repositories
+namespace NSUOW.Persistence.Repositories.Common
 {
     public class BaseDbContext : DbContext
     {
