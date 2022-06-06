@@ -2,7 +2,7 @@
 
 Tired of the same old c# unit of work? Here is a so generic unit of work that I doubt that it works (joking!).
 
-Also, keep in mind that repository and unit of work are antipatterns (perpetuated by DDD)! Entity Framework DbContext (Core) is already a unit of work!
+Also, keep in mind that repository and unit of work with entity framework are antipatterns! Entity Framework DbContext (Core) is already a unit of work!
 
 [No need for repositories and unit of work with Entity Framework Core](https://gunnarpeipman.com/ef-core-repository-unit-of-work/ "No need for repositories and unit of work with Entity Framework Core")
 
