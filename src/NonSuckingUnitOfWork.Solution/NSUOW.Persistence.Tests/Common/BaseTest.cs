@@ -9,6 +9,8 @@ namespace NSUOW.Persistence.Tests.Common
     {
         protected static Service GetDummyService(string serviceBarCode)
         {
+            var totalWeight = 2.ToRandomDecimal();
+
             return new Service
             {
                 Amount = null,
@@ -42,8 +44,7 @@ namespace NSUOW.Persistence.Tests.Common
                 SenderContactPhoneNumber = "912341234",
                 SenderName = "dummy person",
                 ServiceBarCode = serviceBarCode,
-                TotalWeightOfVolumes = 16.9m,
-                CreatedBy = "Unit Test",
+                TotalWeightOfVolumes = totalWeight,
                 Volumes = new List<Volume>()
                 {
                     new Volume
@@ -52,9 +53,8 @@ namespace NSUOW.Persistence.Tests.Common
                         Length = 2,
                         VolumeBarCode = $"{serviceBarCode}001",
                         VolumeNumber = 1,
-                        Weight = 8.45m,
-                        Width = 2,
-                        CreatedBy = "Unit Test"
+                        Weight = totalWeight / 2,
+                        Width = 2
                     },
                     new Volume
                     {
@@ -62,9 +62,8 @@ namespace NSUOW.Persistence.Tests.Common
                         Length = 2,
                         VolumeBarCode = $"{serviceBarCode}002",
                         VolumeNumber = 2,
-                        Weight = 8.45m,
-                        Width = 2,
-                        CreatedBy = "Unit Test",
+                        Weight = totalWeight / 2,
+                        Width = 2
                     }
                 }
             };

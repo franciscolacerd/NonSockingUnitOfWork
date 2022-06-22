@@ -27,6 +27,25 @@ namespace NSUOW.Persistence.Tests
         [Test]
         public async Task Service_CreateServiceWithVolumes_ReturnService()
         {
+            string serviceBarCode = await GetAndAssertServiceAsync();
+        }
+
+        [Test]
+        public async Task Service_ServiceGetByServiceBarCode_ReturnServiceWithNoVolumes()
+        {
+            string serviceBarCode = await GetAndAssertServiceAsync();
+
+            var newService = await _unitOfWork.ServiceRepository.QueryFirstAsync(x => x.ServiceBarCode == serviceBarCode);
+
+            newService?.Should().NotBeNull();
+
+            newService?.ServiceBarCode.Should().NotBeNull();
+
+            newService?.ServiceBarCode.Should().BeEquivalentTo(serviceBarCode);
+        }
+
+        private async Task<string> GetAndAssertServiceAsync()
+        {
             var serviceBarCode = 15.ToRandomStringOfInts();
 
             var service = GetDummyService(serviceBarCode);
@@ -40,6 +59,8 @@ namespace NSUOW.Persistence.Tests
             result?.ServiceBarCode.Should().NotBeNull();
 
             result?.ServiceBarCode.Should().BeEquivalentTo(serviceBarCode);
+
+            return serviceBarCode;
         }
     }
 }
