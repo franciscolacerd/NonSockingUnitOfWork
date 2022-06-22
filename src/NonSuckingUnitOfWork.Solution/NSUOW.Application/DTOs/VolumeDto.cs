@@ -4,7 +4,7 @@ namespace NSUOW.Application.DTOs
 {
     public partial class VolumeDto : BaseDto
     {
-        public long ServiceId { get; set; }
+        public int ServiceId { get; set; }
         public string VolumeBarCode { get; set; } = null!;
         public int VolumeNumber { get; set; }
         public decimal Weight { get; set; }

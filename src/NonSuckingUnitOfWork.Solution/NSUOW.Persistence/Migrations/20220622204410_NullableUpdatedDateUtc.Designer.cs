@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NSUOW.Persistence;
 
@@ -11,9 +12,10 @@ using NSUOW.Persistence;
 namespace NSUOW.Persistence.Migrations
 {
     [DbContext(typeof(NsuowDbContext))]
-    partial class NsuowDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220622204410_NullableUpdatedDateUtc")]
+    partial class NullableUpdatedDateUtc
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

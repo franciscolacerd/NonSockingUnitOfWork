@@ -11,6 +11,8 @@ namespace NSUOW.Persistence
     {
         public static IServiceCollection ConfigurePersistenceServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddHttpContextAccessor();
+
             services.AddDbContext<NsuowDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DbContext"),
                 options =>
                 {

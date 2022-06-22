@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NSUOW.Application;
 using NSUOW.Persistence;
 using NUnit.Framework;
 
@@ -28,6 +29,8 @@ namespace ServicesApi.Services.Tests.Strapper
             var configurationRoot = GetIConfigurationRoot(TestContext.CurrentContext.TestDirectory);
 
             services.ConfigurePersistenceServices(configurationRoot);
+
+            services.ConfigureApplicationServices();
 
             services.AddSingleton<IConfiguration>(configurationRoot);
 

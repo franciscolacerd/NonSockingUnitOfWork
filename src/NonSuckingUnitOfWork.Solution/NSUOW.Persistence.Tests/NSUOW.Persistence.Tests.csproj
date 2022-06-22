@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="6.7.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.6" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="6.0.0" />
@@ -25,7 +25,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\NSUOW.Application\NSUOW.Application.csproj" />
+    <ProjectReference Include="..\NSUOW.Domain\NSUOW.Domain.csproj" />
     <ProjectReference Include="..\NSUOW.Persistence\NSUOW.Persistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using NSUOW.Application.Models.Persistence;
+﻿using NSUOW.Application.Models.Persistence;
+using NSUOW.Persistence.Repositories.Common;
 using System.Linq.Expressions;
 
 namespace NSUOW.Persistence.Contracts
@@ -7,7 +7,7 @@ namespace NSUOW.Persistence.Contracts
     public interface IGenericRepository<TEntity, TDto, TContext>
         where TEntity : class
         where TDto : class
-        where TContext : DbContext
+        where TContext : BaseDbContext
     {
 
         Task<TDto?> AddAsync(TEntity entity);

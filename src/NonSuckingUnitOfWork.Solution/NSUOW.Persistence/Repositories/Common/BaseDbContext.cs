@@ -5,12 +5,21 @@ namespace NSUOW.Persistence.Repositories.Common
 {
     public class BaseDbContext : DbContext
     {
+        const string defaultUsername = "SYSTEM";
+
         public BaseDbContext(DbContextOptions options) : base(options)
         {
         }
 
-        public virtual async Task<int> SaveChangesAsync(string username = "SYSTEM")
+        public virtual async Task<int> SaveChangesAsync()
         {
+            return await base.SaveChangesAsync();
+        }
+
+        public virtual async Task<int> SaveChangesAsync(string username = defaultUsername)
+        {
+            if (string.IsNullOrEmpty(username)) { username = defaultUsername; }
+
             foreach (var entry in base.ChangeTracker.Entries<BaseDomainEntity>()
                 .Where(q => q.State == EntityState.Added || q.State == EntityState.Modified))
             {
@@ -27,8 +36,10 @@ namespace NSUOW.Persistence.Repositories.Common
             return await base.SaveChangesAsync();
         }
 
-        public virtual async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default, string username = "SYSTEM")
+        public virtual async Task<int> SaveChangesAsync(string username = defaultUsername, CancellationToken cancellationToken = default)
         {
+            if (string.IsNullOrEmpty(username)) { username = defaultUsername; }
+
             foreach (var entry in base.ChangeTracker.Entries<BaseDomainEntity>()
                 .Where(q => q.State == EntityState.Added || q.State == EntityState.Modified))
             {

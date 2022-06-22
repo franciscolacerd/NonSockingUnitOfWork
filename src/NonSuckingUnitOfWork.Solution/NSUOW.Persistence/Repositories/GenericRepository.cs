@@ -14,7 +14,7 @@ namespace NSUOW.Persistence.Repositories
     public class GenericRepository<TEntity, TDto, TContext> : BaseRepository<TEntity, TContext>, IGenericRepository<TEntity, TDto, TContext>
         where TEntity : BaseDomainEntity
         where TDto : BaseDto
-        where TContext : DbContext
+        where TContext : BaseDbContext
     {
         private readonly TContext _dbContext;
         protected IMapper _mapper { get; }
@@ -36,8 +36,6 @@ namespace NSUOW.Persistence.Repositories
                 await _dbContext
                     .Set<TEntity>()
                     .AddAsync(mappedEntity);
-
-                await _dbContext.SaveChangesAsync();
             }
 
             return await GetByIdAsync(mappedEntity.GetKey(_dbContext));
@@ -53,8 +51,6 @@ namespace NSUOW.Persistence.Repositories
                 return;
 
             dbSet.Remove(entity);
-
-            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<IReadOnlyList<TDto>> GetAllAsync()
@@ -203,8 +199,6 @@ namespace NSUOW.Persistence.Repositories
             await _dbContext
                  .Set<TEntity>()
                  .FindAsync(new object[] { entity.Id });
-
-            await _dbContext.SaveChangesAsync();
         }
     }
 }

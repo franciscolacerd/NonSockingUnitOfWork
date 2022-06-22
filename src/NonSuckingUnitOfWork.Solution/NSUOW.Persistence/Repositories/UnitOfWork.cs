@@ -45,9 +45,14 @@ namespace NSUOW.Persistence.Repositories
 
         public async Task<int> CompleteAsync(CancellationToken cancellationToken = default)
         {
-            var username = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name)?.Value;
+            var username = _httpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.Name)?.Value;
 
-            return await _context.SaveChangesAsync(cancellationToken, username!);
+            return await _context.SaveChangesAsync(username, cancellationToken);
+        }
+
+        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            return await CompleteAsync(cancellationToken);
         }
 
         public void Dispose()
