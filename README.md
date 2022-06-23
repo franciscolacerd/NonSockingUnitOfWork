@@ -119,9 +119,11 @@ And then:
 
 *Query for entity:*
 
-`await _unitOfWork.DeliveryRepository.QueryFirstAsync(x => x.BarCode == barcode)`
+`var delivery = await _unitOfWork.DeliveryRepository.QueryFirstAsync(x => x.BarCode == barcode)`
 
+*Query for entity with child include:*
 
+`var delivery = await _unitOfWork.DeliveryRepository.QueryFirstAsync(x => x.BarCode == barcode, include => include.Packages)`
 
 
 More documentation in the near future.
