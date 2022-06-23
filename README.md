@@ -12,7 +12,8 @@ Also, keep in mind that repository and unit of work with entity framework are an
 
 **The good old repository pattern:**
 
-        Task<TDto?> AddAsync(TEntity entity);
+	//Entity and not dto because we need identity value after unit of work SaveChangesAsync()
+        Task<TEntity> AddAsync(TEntity entity);
 		
         Task DeleteAsync(TEntity entity);
 		
