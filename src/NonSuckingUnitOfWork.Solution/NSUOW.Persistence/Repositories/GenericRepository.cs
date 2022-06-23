@@ -25,20 +25,14 @@ namespace NSUOW.Persistence.Repositories
             _mapper = mapper;
         }
 
-        public async Task<TDto?> AddAsync(TEntity entity)
+        //Entity and not dto because we need identity value after unit of work SaveChangesAsync()
+        public async Task<TEntity> AddAsync(TEntity entity)
         {
-            var mappedEntity = _mapper.Map<TEntity>(entity);
+            var entityEntry = await _dbContext
+                .Set<TEntity>()
+                .AddAsync(entity);
 
-            var result = await GetByIdAsync(entity.GetKey(_dbContext));
-
-            if (result == null)
-            {
-                await _dbContext
-                    .Set<TEntity>()
-                    .AddAsync(mappedEntity);
-            }
-
-            return await GetByIdAsync(mappedEntity.GetKey(_dbContext));
+            return entityEntry.Entity;
         }
 
         public async Task DeleteAsync(TEntity entity)

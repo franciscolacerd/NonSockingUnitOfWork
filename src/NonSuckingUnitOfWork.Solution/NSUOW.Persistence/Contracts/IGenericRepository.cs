@@ -1,16 +1,19 @@
-﻿using NSUOW.Application.Models.Persistence;
+﻿using NSUOW.Application.DTOs.Common;
+using NSUOW.Application.Models.Persistence;
+using NSUOW.Domain.Common;
 using NSUOW.Persistence.Repositories.Common;
 using System.Linq.Expressions;
 
 namespace NSUOW.Persistence.Contracts
 {
     public interface IGenericRepository<TEntity, TDto, TContext>
-        where TEntity : class
-        where TDto : class
+        where TEntity : BaseDomainEntity
+        where TDto : BaseDto
         where TContext : BaseDbContext
     {
 
-        Task<TDto?> AddAsync(TEntity entity);
+        //Entity and not dto because we need identity value after unit of work SaveChangesAsync()
+        Task<TEntity> AddAsync(TEntity entity);
 
         Task DeleteAsync(TEntity entity);
         Task<IReadOnlyList<TDto>> GetAllAsync();

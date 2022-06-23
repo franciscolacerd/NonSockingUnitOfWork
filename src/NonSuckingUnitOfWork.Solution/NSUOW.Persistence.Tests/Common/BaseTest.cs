@@ -1,12 +1,53 @@
-﻿using NSUOW.Application.Extensions;
+﻿using AutoMapper;
+using FluentAssertions;
+using NSUOW.Application.DTOs;
+using NSUOW.Application.Extensions;
 using NSUOW.Domain;
+using NSUOW.Persistence.Contracts;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace NSUOW.Persistence.Tests.Common
 {
     public class BaseTest
     {
+        protected IUnitOfWork _unitOfWork;
+
+        protected IMapper _mapper;
+
+        protected async Task<string> GetAndAssertDeliveryAsync()
+        {
+            var barcode = GetBarcode();
+
+            await GetAndAssertDeliveryAsync(barcode);
+
+            return barcode;
+        }
+
+        protected static string GetBarcode()
+        {
+            return 15.ToRandomStringOfInts();
+        }
+
+        protected async Task<DeliveryDto> GetAndAssertDeliveryAsync(string barcode)
+        {
+            var delivery = GetDummyDelivery(barcode);
+
+            var result = await _unitOfWork.DeliveryRepository.AddAsync(delivery);
+
+            await _unitOfWork.SaveChangesAsync();
+
+            result.Should().NotBeNull();
+
+            result.BarCode.Should().NotBeNull();
+
+            result.BarCode.Should().BeEquivalentTo(barcode);
+
+            return _mapper.Map<DeliveryDto>(result);
+        }
+
+
         protected static Delivery GetDummyDelivery(string barcode)
         {
             var totalWeight = 2.ToRandomDecimal();
