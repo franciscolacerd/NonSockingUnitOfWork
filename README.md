@@ -64,35 +64,13 @@ Also, keep in mind that repository and unit of work with entity framework are an
             
 **The generic unit of work:**            
             
+        IGenericRepository<Delivery, NsuowDbContext> DeliveryRepository { get; }
+        IGenericRepository<Package, NsuowDbContext> PackageRepository { get; }
 
-    public class UnitOfWork : IUnitOfWork
-    {
-        private readonly IMapper _mapper;
-
-        private readonly NsuowDbContext _context;
-
-        private IDbContextTransaction _transaction;
-
-        private readonly IHttpContextAccessor _httpContextAccessor;
-
-        private IGenericRepository<Delivery, DeliveryDto, NsuowDbContext> _deliveryRepository;
-
-        private IGenericRepository<Package, PackageDto, NsuowDbContext> _packageRepository;
-
-        public UnitOfWork(NsuowDbContext context, IHttpContextAccessor httpContextAccessor, IMapper mapper)
-        {
-            _mapper = mapper;
-            _context = context;
-            _httpContextAccessor = httpContextAccessor;
-        }
-
-        public IGenericRepository<Delivery, DeliveryDto, NsuowDbContext> DeliveryRepository => 
-                          _deliveryRepository ??= new GenericRepository<Delivery, DeliveryDto, NsuowDbContext>(_context, _mapper);
-
-        public IGenericRepository<Package, PackageDto, NsuowDbContext> PackageRepository => 
-                          _packageRepository ??= new GenericRepository<Package, PackageDto, NsuowDbContext>(_context, _mapper);
-
-
+        Task BeginTransactionAsync(CancellationToken cancellationToken = default);
+        Task CommitTransactionAsync(CancellationToken cancellationToken = default);
+        Task<int> CompleteAsync(CancellationToken cancellationToken = default);
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
 -----
 
