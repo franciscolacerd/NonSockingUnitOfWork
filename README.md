@@ -64,6 +64,8 @@ Also, keep in mind that repository and unit of work with entity framework are an
             
 **The generic unit of work:**            
             
+    public interface IUnitOfWork : IDisposable
+    {
         IGenericRepository<Delivery, NsuowDbContext> DeliveryRepository { get; }
         IGenericRepository<Package, NsuowDbContext> PackageRepository { get; }
 
@@ -71,6 +73,7 @@ Also, keep in mind that repository and unit of work with entity framework are an
         Task CommitTransactionAsync(CancellationToken cancellationToken = default);
         Task<int> CompleteAsync(CancellationToken cancellationToken = default);
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+    }
 
 -----
 
