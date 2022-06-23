@@ -12,45 +12,44 @@ Also, keep in mind that repository and unit of work with entity framework are an
 
 **The good old repository pattern:**
 
-	//Entity and not dto because we need identity value after unit of work SaveChangesAsync()
         Task<TEntity> AddAsync(TEntity entity);
-		
+
         Task DeleteAsync(TEntity entity);
-		
-        Task<IReadOnlyList<TDto>> GetAllAsync();
-		
-        Task<TDto?> GetByIdAsync(int id);
+	
+        Task<IReadOnlyList<TEntity>> GetAllAsync();
+
+        Task<TEntity?> GetByIdAsync(int id);
 		
         Task UpdateAsync(TEntity entity);
 
 **Nice functionalities for quering, pagination,sorting, include and so on:**
 
 
-        Task<IReadOnlyList<TDto>> QueryAsync(Expression<Func<TEntity, bool>>? predicate = null);
+        Task<IReadOnlyList<TEntity>> QueryAsync(Expression<Func<TEntity, bool>>? predicate = null);
 
-        Task<IReadOnlyList<TDto>> QueryAsync(
+        Task<IReadOnlyList<TEntity>> QueryAsync(
             Expression<Func<TEntity, bool>>? predicate = null,
             params Expression<Func<TEntity, object>>[]? includes);
 
-        Task<PagedList<TDto>> QueryAsync(
+        Task<PagedList<TEntity>> QueryAsync(
             int page,
             int pageSize,
             Expression<Func<TEntity, bool>>? predicate = null);
 
-        Task<PagedList<TDto>> QueryAsync(
+        Task<PagedList<TEntity>> QueryAsync(
             int page,
             int pageSize,
             Expression<Func<TEntity, bool>>? predicate = null,
             params Expression<Func<TEntity, object>>[]? includes);
 
-        Task<PagedList<TDto>> QueryAsync(
+        Task<PagedList<TEntity>> QueryAsync(
            int page,
            int pageSize,
            string sortColumn,
            string sortDirection,
            Expression<Func<TEntity, bool>>? predicate = null);
 
-        Task<PagedList<TDto>> QueryAsync(
+        Task<PagedList<TEntity>> QueryAsync(
             int page,
             int pageSize,
             string sortColumn,
@@ -58,9 +57,9 @@ Also, keep in mind that repository and unit of work with entity framework are an
             Expression<Func<TEntity, bool>>? predicate = null,
             params Expression<Func<TEntity, object>>[] includes);
 
-        Task<TDto?> QueryFirstAsync(Expression<Func<TEntity, bool>>? predicate = null);
+        Task<TEntity?> QueryFirstAsync(Expression<Func<TEntity, bool>>? predicate = null);
 
-        Task<TDto?> QueryFirstAsync(Expression<Func<TEntity, bool>>? predicate = null, 
+        Task<TEntity?> QueryFirstAsync(Expression<Func<TEntity, bool>>? predicate = null,
             params Expression<Func<TEntity, object>>[]? includes);
             
 **The generic unit of work:**            
