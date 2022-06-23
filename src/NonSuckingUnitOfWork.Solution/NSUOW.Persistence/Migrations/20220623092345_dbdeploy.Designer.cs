@@ -12,30 +12,36 @@ using NSUOW.Persistence;
 namespace NSUOW.Persistence.Migrations
 {
     [DbContext(typeof(NsuowDbContext))]
-    [Migration("20220622204410_NullableUpdatedDateUtc")]
-    partial class NullableUpdatedDateUtc
+    [Migration("20220623092345_dbdeploy")]
+    partial class dbdeploy
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.5")
+                .HasAnnotation("ProductVersion", "6.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("NSUOW.Domain.Service", b =>
+            modelBuilder.Entity("NSUOW.Domain.Delivery", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ServiceId");
+                        .HasColumnName("DeliveryId");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<decimal?>("Amount")
                         .HasColumnType("decimal(18,2)")
                         .HasColumnName("Amount");
+
+                    b.Property<string>("BarCode")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("BarCode");
 
                     b.Property<string>("ClientReference")
                         .HasMaxLength(50)
@@ -197,12 +203,6 @@ namespace NSUOW.Persistence.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasColumnName("SenderName");
 
-                    b.Property<string>("ServiceBarCode")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("ServiceBarCode");
-
                     b.Property<decimal>("TotalWeightOfVolumes")
                         .HasColumnType("decimal(18,3)")
                         .HasColumnName("TotalWeightOfVolumes");
@@ -226,15 +226,15 @@ namespace NSUOW.Persistence.Migrations
 
                     b.HasIndex("SenderContactPhoneNumber");
 
-                    b.ToTable("Services", "dbo");
+                    b.ToTable("Deliveries", "dbo");
                 });
 
-            modelBuilder.Entity("NSUOW.Domain.Volume", b =>
+            modelBuilder.Entity("NSUOW.Domain.Package", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("VolumeId");
+                        .HasColumnName("PackageId");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
@@ -248,6 +248,10 @@ namespace NSUOW.Persistence.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("CreatedDateUtc");
 
+                    b.Property<int>("DeliveryId")
+                        .HasColumnType("int")
+                        .HasColumnName("DeliveryId");
+
                     b.Property<decimal?>("Height")
                         .HasColumnType("decimal(10,3)")
                         .HasColumnName("Height");
@@ -256,9 +260,15 @@ namespace NSUOW.Persistence.Migrations
                         .HasColumnType("decimal(10,3)")
                         .HasColumnName("Length");
 
-                    b.Property<int>("ServiceId")
+                    b.Property<string>("PackageBarCode")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("PackageBarCode");
+
+                    b.Property<int>("PackageNumber")
                         .HasColumnType("int")
-                        .HasColumnName("ServiceId");
+                        .HasColumnName("PackageNumber");
 
                     b.Property<string>("UpdatedBy")
                         .HasMaxLength(100)
@@ -268,16 +278,6 @@ namespace NSUOW.Persistence.Migrations
                     b.Property<DateTime?>("UpdatedDateUtc")
                         .HasColumnType("datetime2")
                         .HasColumnName("UpdatedDateUtc");
-
-                    b.Property<string>("VolumeBarCode")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("VolumeBarCode");
-
-                    b.Property<int>("VolumeNumber")
-                        .HasColumnType("int")
-                        .HasColumnName("VolumeNumber");
 
                     b.Property<decimal>("Weight")
                         .HasColumnType("decimal(18,3)")
@@ -289,26 +289,26 @@ namespace NSUOW.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ServiceId");
+                    b.HasIndex("DeliveryId");
 
-                    b.ToTable("Volumes", "dbo");
+                    b.ToTable("Packages", "dbo");
                 });
 
-            modelBuilder.Entity("NSUOW.Domain.Volume", b =>
+            modelBuilder.Entity("NSUOW.Domain.Package", b =>
                 {
-                    b.HasOne("NSUOW.Domain.Service", "Service")
-                        .WithMany("Volumes")
-                        .HasForeignKey("ServiceId")
+                    b.HasOne("NSUOW.Domain.Delivery", "Delivery")
+                        .WithMany("Packages")
+                        .HasForeignKey("DeliveryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("FK_Volumes_Services_ServiceId");
+                        .HasConstraintName("FK_Packages_Deliveries_DeliveryId");
 
-                    b.Navigation("Service");
+                    b.Navigation("Delivery");
                 });
 
-            modelBuilder.Entity("NSUOW.Domain.Service", b =>
+            modelBuilder.Entity("NSUOW.Domain.Delivery", b =>
                 {
-                    b.Navigation("Volumes");
+                    b.Navigation("Packages");
                 });
 #pragma warning restore 612, 618
         }

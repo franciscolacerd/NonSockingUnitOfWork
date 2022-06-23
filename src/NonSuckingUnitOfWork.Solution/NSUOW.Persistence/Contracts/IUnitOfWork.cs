@@ -6,8 +6,8 @@ namespace NSUOW.Persistence.Contracts
     public interface IUnitOfWork : IDisposable
     {
 
-        IGenericRepository<Service, ServiceDto, NsuowDbContext> ServiceRepository { get; }
-        IGenericRepository<Volume, VolumeDto, NsuowDbContext> VolumeRepository { get; }
+        IGenericRepository<Delivery, DeliveryDto, NsuowDbContext> DeliveryRepository { get; }
+        IGenericRepository<Package, PackageDto, NsuowDbContext> PackageRepository { get; }
 
         Task BeginTransactionAsync(CancellationToken cancellationToken = default);
         Task CommitTransactionAsync(CancellationToken cancellationToken = default);

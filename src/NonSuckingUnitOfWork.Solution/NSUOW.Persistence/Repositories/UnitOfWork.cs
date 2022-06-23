@@ -18,9 +18,9 @@ namespace NSUOW.Persistence.Repositories
 
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        private IGenericRepository<Service, ServiceDto, NsuowDbContext> _serviceRepository;
+        private IGenericRepository<Delivery, DeliveryDto, NsuowDbContext> _deliveryRepository;
 
-        private IGenericRepository<Volume, VolumeDto, NsuowDbContext> _volumeRepository;
+        private IGenericRepository<Package, PackageDto, NsuowDbContext> _packageRepository;
 
         public UnitOfWork(NsuowDbContext context, IHttpContextAccessor httpContextAccessor, IMapper mapper)
         {
@@ -29,9 +29,9 @@ namespace NSUOW.Persistence.Repositories
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public IGenericRepository<Service, ServiceDto, NsuowDbContext> ServiceRepository => _serviceRepository ??= new GenericRepository<Service, ServiceDto, NsuowDbContext>(_context, _mapper);
+        public IGenericRepository<Delivery, DeliveryDto, NsuowDbContext> DeliveryRepository => _deliveryRepository ??= new GenericRepository<Delivery, DeliveryDto, NsuowDbContext>(_context, _mapper);
 
-        public IGenericRepository<Volume, VolumeDto, NsuowDbContext> VolumeRepository => _volumeRepository ??= new GenericRepository<Volume, VolumeDto, NsuowDbContext>(_context, _mapper);
+        public IGenericRepository<Package, PackageDto, NsuowDbContext> PackageRepository => _packageRepository ??= new GenericRepository<Package, PackageDto, NsuowDbContext>(_context, _mapper);
 
         public async Task BeginTransactionAsync(CancellationToken cancellationToken = default)
         {

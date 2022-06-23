@@ -4,11 +4,11 @@ using NSUOW.Domain;
 
 namespace NSUOW.Persistence.Configurations.Entities
 {
-    public class ServiceConfiguration : IEntityTypeConfiguration<Service>
+    public class DeliveryConfiguration : IEntityTypeConfiguration<Delivery>
     {
-        public void Configure(EntityTypeBuilder<Service> builder)
+        public void Configure(EntityTypeBuilder<Delivery> builder)
         {
-            builder.ToTable("Services", "dbo");
+            builder.ToTable("Deliveries", "dbo");
 
             // key
             builder.HasKey(t => t.Id);
@@ -24,7 +24,7 @@ namespace NSUOW.Persistence.Configurations.Entities
             // properties
             builder.Property(t => t.Id)
                 .IsRequired()
-                .HasColumnName("ServiceId")
+                .HasColumnName("DeliveryId")
                 .HasColumnType("int")
                 .ValueGeneratedOnAdd();
 
@@ -178,9 +178,9 @@ namespace NSUOW.Persistence.Configurations.Entities
                 .HasColumnName("UpdatedDateUtc")
                 .HasColumnType("datetime2");
 
-            builder.Property(t => t.ServiceBarCode)
+            builder.Property(t => t.BarCode)
                 .IsRequired()
-                .HasColumnName("ServiceBarCode")
+                .HasColumnName("BarCode")
                 .HasColumnType("nvarchar(50)")
                 .HasMaxLength(50);
 

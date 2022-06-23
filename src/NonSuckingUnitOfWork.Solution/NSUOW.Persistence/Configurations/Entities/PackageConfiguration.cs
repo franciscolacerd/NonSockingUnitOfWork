@@ -4,11 +4,11 @@ using NSUOW.Domain;
 
 namespace NSUOW.Persistence.Configurations.Entities
 {
-    public class VolumeConfiguration : IEntityTypeConfiguration<Volume>
+    public class PackageConfiguration : IEntityTypeConfiguration<Package>
     {
-        public void Configure(EntityTypeBuilder<Volume> builder)
+        public void Configure(EntityTypeBuilder<Package> builder)
         {
-            builder.ToTable("Volumes", "dbo");
+            builder.ToTable("Packages", "dbo");
 
             // key
             builder.HasKey(t => t.Id);
@@ -16,24 +16,24 @@ namespace NSUOW.Persistence.Configurations.Entities
             // properties
             builder.Property(t => t.Id)
                 .IsRequired()
-                .HasColumnName("VolumeId")
+                .HasColumnName("PackageId")
                 .HasColumnType("int")
                 .ValueGeneratedOnAdd();
 
-            builder.Property(t => t.ServiceId)
+            builder.Property(t => t.DeliveryId)
                 .IsRequired()
-                .HasColumnName("ServiceId")
+                .HasColumnName("DeliveryId")
                 .HasColumnType("int");
 
-            builder.Property(t => t.VolumeBarCode)
+            builder.Property(t => t.PackageBarCode)
                 .IsRequired()
-                .HasColumnName("VolumeBarCode")
+                .HasColumnName("PackageBarCode")
                 .HasColumnType("nvarchar(50)")
                 .HasMaxLength(50);
 
-            builder.Property(t => t.VolumeNumber)
+            builder.Property(t => t.PackageNumber)
                 .IsRequired()
-                .HasColumnName("VolumeNumber")
+                .HasColumnName("PackageNumber")
                 .HasColumnType("int");
 
             builder.Property(t => t.Weight)
@@ -74,10 +74,10 @@ namespace NSUOW.Persistence.Configurations.Entities
                 .HasColumnType("decimal(10,3)");
 
             // relationships
-            builder.HasOne(t => t.Service)
-                .WithMany(t => t.Volumes)
-                .HasForeignKey(d => d.ServiceId)
-                .HasConstraintName("FK_Volumes_Services_ServiceId");
+            builder.HasOne(t => t.Delivery)
+                .WithMany(t => t.Packages)
+                .HasForeignKey(d => d.DeliveryId)
+                .HasConstraintName("FK_Packages_Deliveries_DeliveryId");
         }
     }
 }

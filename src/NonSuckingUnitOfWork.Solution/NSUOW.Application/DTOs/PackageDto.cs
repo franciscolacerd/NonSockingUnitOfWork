@@ -2,15 +2,15 @@
 
 namespace NSUOW.Application.DTOs
 {
-    public partial class VolumeDto : BaseDto
+    public partial class PackageDto : BaseDto
     {
-        public int ServiceId { get; set; }
-        public string VolumeBarCode { get; set; } = null!;
-        public int VolumeNumber { get; set; }
+        public int DeliveryId { get; set; }
+        public string PackageBarCode { get; set; } = null!;
+        public int PackageNumber { get; set; }
         public decimal Weight { get; set; }
         public decimal? Height { get; set; }
         public decimal? Length { get; set; }
         public decimal? Width { get; set; }
-        public virtual ServiceDto Service { get; set; } = null!;
+        public virtual DeliveryDto Delivery { get; set; } = null!;
     }
 }

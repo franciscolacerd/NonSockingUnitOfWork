@@ -13,11 +13,11 @@ namespace NSUOW.Persistence.Migrations
                 name: "dbo");
 
             migrationBuilder.CreateTable(
-                name: "Services",
+                name: "Deliveries",
                 schema: "dbo",
                 columns: table => new
                 {
-                    ServiceId = table.Column<int>(type: "int", nullable: false)
+                    DeliveryId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ClientReference = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     NumberOfVolumes = table.Column<int>(type: "int", nullable: false),
@@ -46,91 +46,91 @@ namespace NSUOW.Persistence.Migrations
                     ReceiverAddressZipCodePlace = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     ReceiverAddressCountryCode = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: true),
                     ReceiverFixedInstructions = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
-                    ServiceBarCode = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    BarCode = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     PinNumber = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: true),
                     ETA = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     PickingDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeliveryDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedDateUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    UpdatedDateUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDateUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Services", x => x.ServiceId);
+                    table.PrimaryKey("PK_Deliveries", x => x.DeliveryId);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Volumes",
+                name: "Packages",
                 schema: "dbo",
                 columns: table => new
                 {
-                    VolumeId = table.Column<int>(type: "int", nullable: false)
+                    PackageId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ServiceId = table.Column<int>(type: "int", nullable: false),
-                    VolumeBarCode = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    VolumeNumber = table.Column<int>(type: "int", nullable: false),
+                    DeliveryId = table.Column<int>(type: "int", nullable: false),
+                    PackageBarCode = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    PackageNumber = table.Column<int>(type: "int", nullable: false),
                     Weight = table.Column<decimal>(type: "decimal(18,3)", nullable: false),
                     Height = table.Column<decimal>(type: "decimal(10,3)", nullable: true),
                     Length = table.Column<decimal>(type: "decimal(10,3)", nullable: true),
                     Width = table.Column<decimal>(type: "decimal(10,3)", nullable: true),
                     CreatedDateUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    UpdatedDateUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDateUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Volumes", x => x.VolumeId);
+                    table.PrimaryKey("PK_Packages", x => x.PackageId);
                     table.ForeignKey(
-                        name: "FK_Volumes_Services_ServiceId",
-                        column: x => x.ServiceId,
+                        name: "FK_Packages_Deliveries_DeliveryId",
+                        column: x => x.DeliveryId,
                         principalSchema: "dbo",
-                        principalTable: "Services",
-                        principalColumn: "ServiceId",
+                        principalTable: "Deliveries",
+                        principalColumn: "DeliveryId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Services_ReceiverAddress",
+                name: "IX_Deliveries_ReceiverAddress",
                 schema: "dbo",
-                table: "Services",
+                table: "Deliveries",
                 column: "ReceiverAddress");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Services_ReceiverContactPhoneNumber",
+                name: "IX_Deliveries_ReceiverContactPhoneNumber",
                 schema: "dbo",
-                table: "Services",
+                table: "Deliveries",
                 column: "ReceiverContactPhoneNumber");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Services_SenderAddress",
+                name: "IX_Deliveries_SenderAddress",
                 schema: "dbo",
-                table: "Services",
+                table: "Deliveries",
                 column: "SenderAddress");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Services_SenderContactPhoneNumber",
+                name: "IX_Deliveries_SenderContactPhoneNumber",
                 schema: "dbo",
-                table: "Services",
+                table: "Deliveries",
                 column: "SenderContactPhoneNumber");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Volumes_ServiceId",
+                name: "IX_Packages_DeliveryId",
                 schema: "dbo",
-                table: "Volumes",
-                column: "ServiceId");
+                table: "Packages",
+                column: "DeliveryId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Volumes",
+                name: "Packages",
                 schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "Services",
+                name: "Deliveries",
                 schema: "dbo");
         }
     }

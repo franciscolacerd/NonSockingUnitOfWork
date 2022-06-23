@@ -2,11 +2,11 @@
 
 namespace NSUOW.Domain
 {
-    public partial class Service : BaseDomainEntity
+    public partial class Delivery : BaseDomainEntity
     {
-        public Service()
+        public Delivery()
         {
-            Volumes = new HashSet<Volume>();
+            Packages = new HashSet<Package>();
         }
 
         public string? ClientReference { get; set; }
@@ -36,11 +36,11 @@ namespace NSUOW.Domain
         public string ReceiverAddressZipCodePlace { get; set; } = null!;
         public string? ReceiverAddressCountryCode { get; set; }
         public string? ReceiverFixedInstructions { get; set; }
-        public string ServiceBarCode { get; set; } = null!;
+        public string BarCode { get; set; } = null!;
         public string? PinNumber { get; set; }
         public string? Eta { get; set; }
         public DateTime? PickingDate { get; set; }
         public DateTime? DeliveryDate { get; set; }
-        public virtual ICollection<Volume> Volumes { get; set; }
+        public virtual ICollection<Package> Packages { get; set; }
     }
 }

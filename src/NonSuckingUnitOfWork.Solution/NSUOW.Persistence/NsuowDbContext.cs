@@ -15,8 +15,8 @@ namespace NSUOW.Persistence
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(NsuowDbContext).Assembly);
         }
 
-        public DbSet<Service> Services { get; set; } = null!;
+        public DbSet<Delivery> Deliveries { get; set; } = null!;
 
-        public DbSet<Volume> Volumes { get; set; } = null!;
+        public DbSet<Package> Packages { get; set; } = null!;
     }
 }

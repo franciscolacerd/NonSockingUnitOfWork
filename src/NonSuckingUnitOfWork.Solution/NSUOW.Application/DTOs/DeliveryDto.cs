@@ -2,11 +2,11 @@
 
 namespace NSUOW.Application.DTOs
 {
-    public partial class ServiceDto : BaseDto
+    public partial class DeliveryDto : BaseDto
     {
-        public ServiceDto()
+        public DeliveryDto()
         {
-            Volumes = new HashSet<VolumeDto>();
+            Packages = new HashSet<PackageDto>();
         }
 
         public string? ClientReference { get; set; }
@@ -36,11 +36,11 @@ namespace NSUOW.Application.DTOs
         public string ReceiverAddressZipCodePlace { get; set; } = null!;
         public string? ReceiverAddressCountryCode { get; set; }
         public string? ReceiverFixedInstructions { get; set; }
-        public string ServiceBarCode { get; set; } = null!;
+        public string BarCode { get; set; } = null!;
         public string? PinNumber { get; set; }
         public string? Eta { get; set; }
         public DateTime? PickingDate { get; set; }
         public DateTime? DeliveryDate { get; set; }
-        public virtual ICollection<VolumeDto> Volumes { get; set; }
+        public virtual ICollection<PackageDto> Packages { get; set; }
     }
 }

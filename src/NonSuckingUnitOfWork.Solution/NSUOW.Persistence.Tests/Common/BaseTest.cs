@@ -7,11 +7,11 @@ namespace NSUOW.Persistence.Tests.Common
 {
     public class BaseTest
     {
-        protected static Service GetDummyService(string serviceBarCode)
+        protected static Delivery GetDummyDelivery(string barcode)
         {
             var totalWeight = 2.ToRandomDecimal();
 
-            return new Service
+            return new Delivery
             {
                 Amount = null,
                 ClientReference = $"test service",
@@ -43,25 +43,25 @@ namespace NSUOW.Persistence.Tests.Common
                 SenderContactName = "dummy person",
                 SenderContactPhoneNumber = "912341234",
                 SenderName = "dummy person",
-                ServiceBarCode = serviceBarCode,
+                BarCode = barcode,
                 TotalWeightOfVolumes = totalWeight,
-                Volumes = new List<Volume>()
+                Packages = new List<Package>()
                 {
-                    new Volume
+                    new Package
                     {
                         Height = 2,
                         Length = 2,
-                        VolumeBarCode = $"{serviceBarCode}001",
-                        VolumeNumber = 1,
+                        PackageBarCode = $"{barcode}001",
+                        PackageNumber = 1,
                         Weight = totalWeight / 2,
                         Width = 2
                     },
-                    new Volume
+                    new Package
                     {
                         Height = 2,
                         Length = 2,
-                        VolumeBarCode = $"{serviceBarCode}002",
-                        VolumeNumber = 2,
+                        PackageBarCode = $"{barcode}002",
+                        PackageNumber = 2,
                         Weight = totalWeight / 2,
                         Width = 2
                     }
