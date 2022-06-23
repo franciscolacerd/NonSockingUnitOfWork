@@ -20,7 +20,7 @@ namespace NSUOW.Persistence
                     options.CommandTimeout(99999);
                 }));
 
-            services.AddScoped(typeof(IGenericRepository<,,>), typeof(GenericRepository<,,>));
+            services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());

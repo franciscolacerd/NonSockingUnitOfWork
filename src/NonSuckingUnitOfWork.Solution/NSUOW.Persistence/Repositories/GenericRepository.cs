@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
-using NSUOW.Application.DTOs.Common;
 using NSUOW.Application.Extensions;
 using NSUOW.Application.Models.Persistence;
 using NSUOW.Domain.Common;
@@ -11,9 +9,8 @@ using System.Linq.Expressions;
 
 namespace NSUOW.Persistence.Repositories
 {
-    public class GenericRepository<TEntity, TDto, TContext> : BaseRepository<TEntity, TContext>, IGenericRepository<TEntity, TDto, TContext>
+    public class GenericRepository<TEntity, TContext> : BaseRepository<TEntity, TContext>, IGenericRepository<TEntity, TContext>
         where TEntity : BaseDomainEntity
-        where TDto : BaseDto
         where TContext : BaseDbContext
     {
         private readonly TContext _dbContext;
@@ -25,7 +22,6 @@ namespace NSUOW.Persistence.Repositories
             _mapper = mapper;
         }
 
-        //Entity and not dto because we need identity value after unit of work SaveChangesAsync()
         public async Task<TEntity> AddAsync(TEntity entity)
         {
             var entityEntry = await _dbContext
@@ -47,15 +43,14 @@ namespace NSUOW.Persistence.Repositories
             dbSet.Remove(entity);
         }
 
-        public async Task<IReadOnlyList<TDto>> GetAllAsync()
+        public async Task<IReadOnlyList<TEntity>> GetAllAsync()
         {
             return await _dbContext
                 .Set<TEntity>()
                 .AsNoTracking()
-                .ProjectTo<TDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
         }
-        public async Task<TDto?> GetByIdAsync(int id)
+        public async Task<TEntity?> GetByIdAsync(int id)
         {
             var key = _dbContext.Model.FindEntityType(typeof(TEntity))?.FindPrimaryKey()?.Properties.Single().Name;
 
@@ -65,27 +60,25 @@ namespace NSUOW.Persistence.Repositories
                 .Set<TEntity>()
                 .AsNoTracking()
                 .Where(x => id.Equals(EF.Property<long>(x, key)))
-                .ProjectTo<TDto?>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<IReadOnlyList<TDto>> QueryAsync(Expression<Func<TEntity, bool>>? predicate = null)
+        public async Task<IReadOnlyList<TEntity>> QueryAsync(Expression<Func<TEntity, bool>>? predicate = null)
         {
             return await QueryAsync(predicate, null);
         }
 
-        public async Task<IReadOnlyList<TDto>> QueryAsync(
+        public async Task<IReadOnlyList<TEntity>> QueryAsync(
             Expression<Func<TEntity, bool>>? predicate = null,
             params Expression<Func<TEntity, object>>[]? includes)
         {
             var _query = SetFiltersToQuery(predicate, includes);
 
             return await _query
-                 .ProjectTo<TDto>(_mapper.ConfigurationProvider)
                  .ToListAsync();
         }
 
-        public async Task<PagedList<TDto>> QueryAsync(
+        public async Task<PagedList<TEntity>> QueryAsync(
             int page,
             int pageSize,
             Expression<Func<TEntity, bool>>? predicate = null)
@@ -93,7 +86,7 @@ namespace NSUOW.Persistence.Repositories
             return await QueryAsync(page, pageSize, predicate, null);
         }
 
-        public async Task<PagedList<TDto>> QueryAsync(
+        public async Task<PagedList<TEntity>> QueryAsync(
             int page,
             int pageSize,
             Expression<Func<TEntity, bool>>? predicate = null,
@@ -101,18 +94,17 @@ namespace NSUOW.Persistence.Repositories
         {
             var _query = SetFiltersToQuery(predicate, includes);
 
-            var count = await _query.ProjectTo<TDto>(_mapper.ConfigurationProvider).CountAsync();
+            var count = await _query.CountAsync();
 
             var result = await _query
                  .Skip(Skip(page, pageSize))
                  .Take(pageSize)
-                 .ProjectTo<TDto>(_mapper.ConfigurationProvider)
                  .ToListAsync();
 
-            return new PagedList<TDto>(count, page, pageSize, null!, null!, result);
+            return new PagedList<TEntity>(count, page, pageSize, null!, null!, result);
         }
 
-        public async Task<PagedList<TDto>> QueryAsync(
+        public async Task<PagedList<TEntity>> QueryAsync(
             int page,
             int pageSize,
             string sortColumn,
@@ -122,7 +114,7 @@ namespace NSUOW.Persistence.Repositories
             return await QueryAsync(page, pageSize, sortColumn, sortDirection, predicate, null!);
         }
 
-        public async Task<PagedList<TDto>> QueryAsync(
+        public async Task<PagedList<TEntity>> QueryAsync(
             int page,
             int pageSize,
             string sortColumn,
@@ -132,9 +124,9 @@ namespace NSUOW.Persistence.Repositories
         {
             var _query = SetFiltersToQuery(predicate, includes);
 
-            var count = await _query.ProjectTo<TDto>(_mapper.ConfigurationProvider).CountAsync();
+            var count = await _query.CountAsync();
 
-            IReadOnlyList<TDto>? result = null;
+            IReadOnlyList<TEntity>? result = null;
 
             if (string.IsNullOrEmpty(sortColumn))
             {
@@ -142,10 +134,9 @@ namespace NSUOW.Persistence.Repositories
                  .OrderByDescending("CreatedDateUtc")
                  .Skip(Skip(page, pageSize))
                  .Take(pageSize)
-                 .ProjectTo<TDto>(_mapper.ConfigurationProvider)
                  .ToListAsync();
 
-                return new PagedList<TDto>(count, page, pageSize, sortColumn, sortDirection, result);
+                return new PagedList<TEntity>(count, page, pageSize, sortColumn, sortDirection, result);
             }
 
             if (string.Equals(sortDirection, "desc", StringComparison.OrdinalIgnoreCase))
@@ -154,10 +145,9 @@ namespace NSUOW.Persistence.Repositories
                  .OrderByDescending(sortColumn.ToUpperCaseFirst())
                  .Skip(Skip(page, pageSize))
                  .Take(pageSize)
-                 .ProjectTo<TDto>(_mapper.ConfigurationProvider)
                  .ToListAsync();
 
-                return new PagedList<TDto>(count, page, pageSize, sortColumn, sortDirection, result);
+                return new PagedList<TEntity>(count, page, pageSize, sortColumn, sortDirection, result);
             }
             else
             {
@@ -165,27 +155,24 @@ namespace NSUOW.Persistence.Repositories
                  .OrderBy(sortColumn.ToUpperCaseFirst())
                  .Skip(Skip(page, pageSize))
                  .Take(pageSize)
-                 .ProjectTo<TDto>(_mapper.ConfigurationProvider)
                  .ToListAsync();
 
-                return new PagedList<TDto>(count, page, pageSize, sortColumn, sortDirection, result);
+                return new PagedList<TEntity>(count, page, pageSize, sortColumn, sortDirection, result);
             }
         }
 
-        public async Task<TDto?> QueryFirstAsync(Expression<Func<TEntity, bool>>? predicate = null)
+        public async Task<TEntity?> QueryFirstAsync(Expression<Func<TEntity, bool>>? predicate = null)
         {
             return await QueryFirstAsync(predicate, null);
         }
 
-        public async Task<TDto?> QueryFirstAsync(
+        public async Task<TEntity?> QueryFirstAsync(
             Expression<Func<TEntity, bool>>? predicate = null,
             params Expression<Func<TEntity, object>>[]? includes)
         {
             var _query = SetFiltersToQuery(predicate, includes);
 
-            return await _query
-                 .ProjectTo<TDto?>(_mapper.ConfigurationProvider)
-                 .FirstOrDefaultAsync();
+            return await _query.FirstOrDefaultAsync();
         }
 
         public async Task UpdateAsync(TEntity entity)

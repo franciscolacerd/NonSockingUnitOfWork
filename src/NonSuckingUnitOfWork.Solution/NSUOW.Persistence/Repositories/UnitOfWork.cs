@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore.Storage;
-using NSUOW.Application.DTOs;
 using NSUOW.Domain;
 using NSUOW.Persistence.Contracts;
 using System.Security.Claims;
@@ -18,9 +17,9 @@ namespace NSUOW.Persistence.Repositories
 
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        private IGenericRepository<Delivery, DeliveryDto, NsuowDbContext> _deliveryRepository;
+        private IGenericRepository<Delivery, NsuowDbContext> _deliveryRepository;
 
-        private IGenericRepository<Package, PackageDto, NsuowDbContext> _packageRepository;
+        private IGenericRepository<Package, NsuowDbContext> _packageRepository;
 
         public UnitOfWork(NsuowDbContext context, IHttpContextAccessor httpContextAccessor, IMapper mapper)
         {
@@ -29,9 +28,9 @@ namespace NSUOW.Persistence.Repositories
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public IGenericRepository<Delivery, DeliveryDto, NsuowDbContext> DeliveryRepository => _deliveryRepository ??= new GenericRepository<Delivery, DeliveryDto, NsuowDbContext>(_context, _mapper);
+        public IGenericRepository<Delivery, NsuowDbContext> DeliveryRepository => _deliveryRepository ??= new GenericRepository<Delivery, NsuowDbContext>(_context, _mapper);
 
-        public IGenericRepository<Package, PackageDto, NsuowDbContext> PackageRepository => _packageRepository ??= new GenericRepository<Package, PackageDto, NsuowDbContext>(_context, _mapper);
+        public IGenericRepository<Package, NsuowDbContext> PackageRepository => _packageRepository ??= new GenericRepository<Package, NsuowDbContext>(_context, _mapper);
 
         public async Task BeginTransactionAsync(CancellationToken cancellationToken = default)
         {
