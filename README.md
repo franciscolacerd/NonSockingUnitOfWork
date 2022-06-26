@@ -58,8 +58,8 @@ Also, keep in mind that repository and unit of work with entity framework are an
             
     public interface IUnitOfWork : IDisposable
     {
-        IGenericRepository<Delivery, NsuowDbContext> DeliveryRepository { get; }
-        IGenericRepository<Package, NsuowDbContext> PackageRepository { get; }
+        IGenericRepository<Delivery, DeliveryDto, NsuowDbContext> DeliveryRepository { get; }
+        IGenericRepository<Package, PackageDto, NsuowDbContext> PackageRepository { get; }
 
         Task BeginTransactionAsync(CancellationToken cancellationToken = default);
         Task CommitTransactionAsync(CancellationToken cancellationToken = default);
@@ -91,11 +91,11 @@ And then:
 
 *Query for entity:*
 
-`var delivery = await _unitOfWork.DeliveryRepository.QueryFirstAsync(x => x.BarCode == barcode)`
+`var delivery = await _unitOfWork.DeliveryRepository.QueryFirstAsync(predicate: x => x.BarCode == barcode)`
 
 *Query for entity with child include:*
 
-`var delivery = await _unitOfWork.DeliveryRepository.QueryFirstAsync(x => x.BarCode == barcode, include => include.Packages)`
+`var delivery = await _unitOfWork.DeliveryRepository.QueryFirstAsync(predicate: x => x.BarCode == barcode, includes: x => x.Packages)`
 
 *Query for entity list:*
 
