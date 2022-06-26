@@ -1,12 +1,13 @@
-﻿using NSUOW.Domain;
+﻿using NSUOW.Application.DTOs;
+using NSUOW.Domain;
 
 namespace NSUOW.Persistence.Contracts
 {
     public interface IUnitOfWork : IDisposable
     {
 
-        IGenericRepository<Delivery, NsuowDbContext> DeliveryRepository { get; }
-        IGenericRepository<Package, NsuowDbContext> PackageRepository { get; }
+        IGenericRepository<Delivery, DeliveryDto, NsuowDbContext> DeliveryRepository { get; }
+        IGenericRepository<Package, PackageDto, NsuowDbContext> PackageRepository { get; }
 
         Task BeginTransactionAsync(CancellationToken cancellationToken = default);
         Task CommitTransactionAsync(CancellationToken cancellationToken = default);

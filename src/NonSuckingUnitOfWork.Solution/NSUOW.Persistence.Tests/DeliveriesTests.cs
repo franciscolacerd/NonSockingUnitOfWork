@@ -5,6 +5,7 @@ using NSUOW.Persistence.Contracts;
 using NSUOW.Persistence.Tests.Common;
 using NUnit.Framework;
 using ServicesApi.Services.Tests.Strapper;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace NSUOW.Persistence.Tests
@@ -58,6 +59,67 @@ namespace NSUOW.Persistence.Tests
             delivery.BarCode.Should().BeEquivalentTo(barcode);
 
             delivery.Packages.Should().NotBeNull();
+
+            delivery.Packages.Should().HaveCountGreaterThan(0);
+        }
+
+        [Test]
+        public async Task Delivery_DeliveryGetPagedListByName_ReturnDeliveryWithPackages()
+        {
+            var pagedDeliveries = await _unitOfWork.DeliveryRepository.QueryAsync(1, 20, predicate: x => x.ReceiverName == "francisco lacerda");
+
+            pagedDeliveries.Should().NotBeNull();
+
+            pagedDeliveries.Results.Should().HaveCountGreaterThan(0);
+
+            pagedDeliveries.PageCount.Should().BeGreaterThan(0);
+
+            pagedDeliveries.RowCount.Should().BeGreaterThan(0);
+        }
+
+        [Test]
+        public async Task Delivery_DeliveryGetPagedListByNameIncludeChild_ReturnDeliveryWithPackages()
+        {
+            var pagedDeliveries = await _unitOfWork.DeliveryRepository.QueryAsync(
+                1,
+                20,
+                predicate: x => x.ReceiverName == "francisco lacerda",
+                includes: x => x.Packages);
+
+            pagedDeliveries.Should().NotBeNull();
+
+            pagedDeliveries.Results.Should().HaveCountGreaterThan(0);
+
+            pagedDeliveries.PageCount.Should().BeGreaterThan(0);
+
+            pagedDeliveries.RowCount.Should().BeGreaterThan(0);
+
+            pagedDeliveries.Results.First().Packages.Should().NotBeNull();
+
+            pagedDeliveries.Results.First().Packages.Should().HaveCountGreaterThan(0);
+        }
+
+        [Test]
+        public async Task Delivery_DeliveryGetPagedListByNameIncludeChildOrderByCreateDateUtc_ReturnDeliveryWithPackages()
+        {
+            var pagedDeliveries = await _unitOfWork.DeliveryRepository.QueryAsync(
+                1,
+                20,
+                predicate: x => x.ReceiverName == "francisco lacerda",
+                orderBy: x => x.OrderBy(y => y.CreatedDateUtc),
+                includes: x => x.Packages);
+
+            pagedDeliveries.Should().NotBeNull();
+
+            pagedDeliveries.Results.Should().HaveCountGreaterThan(0);
+
+            pagedDeliveries.PageCount.Should().BeGreaterThan(0);
+
+            pagedDeliveries.RowCount.Should().BeGreaterThan(0);
+
+            pagedDeliveries.Results.First().Packages.Should().NotBeNull();
+
+            pagedDeliveries.Results.First().Packages.Should().HaveCountGreaterThan(0);
         }
     }
 }

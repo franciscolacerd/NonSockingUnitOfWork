@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using NSUOW.Application.DTOs.Common;
 using NSUOW.Application.Extensions;
-using NSUOW.Application.Models.Persistence;
+using NSUOW.Application.Models.Pagination;
 using NSUOW.Domain.Common;
 using NSUOW.Persistence.Contracts;
 using NSUOW.Persistence.Repositories.Common;
@@ -9,8 +10,9 @@ using System.Linq.Expressions;
 
 namespace NSUOW.Persistence.Repositories
 {
-    public class GenericRepository<TEntity, TContext> : BaseRepository<TEntity, TContext>, IGenericRepository<TEntity, TContext>
+    public class GenericRepository<TEntity, TDto, TContext> : BaseRepository<TEntity, TContext>, IGenericRepository<TEntity, TDto, TContext>
         where TEntity : BaseDomainEntity
+        where TDto : BaseDto
         where TContext : BaseDbContext
     {
         private readonly TContext _dbContext;
@@ -74,19 +76,20 @@ namespace NSUOW.Persistence.Repositories
         {
             var _query = SetFiltersToQuery(predicate, includes);
 
-            return await _query
-                 .ToListAsync();
+            return await _query.ToListAsync();
         }
 
-        public async Task<PagedList<TEntity>> QueryAsync(
+        public async Task<PagedResult<TDto>> QueryAsync(
             int page,
             int pageSize,
             Expression<Func<TEntity, bool>>? predicate = null)
         {
-            return await QueryAsync(page, pageSize, predicate, null);
+            var _query = SetFiltersToQuery(predicate);
+
+            return await _query.GetPagedAsync<TEntity, TDto>(page, pageSize, _mapper);
         }
 
-        public async Task<PagedList<TEntity>> QueryAsync(
+        public async Task<PagedResult<TDto>> QueryAsync(
             int page,
             int pageSize,
             Expression<Func<TEntity, bool>>? predicate = null,
@@ -94,71 +97,19 @@ namespace NSUOW.Persistence.Repositories
         {
             var _query = SetFiltersToQuery(predicate, includes);
 
-            var count = await _query.CountAsync();
-
-            var result = await _query
-                 .Skip(Skip(page, pageSize))
-                 .Take(pageSize)
-                 .ToListAsync();
-
-            return new PagedList<TEntity>(count, page, pageSize, null!, null!, result);
+            return await _query.GetPagedAsync<TEntity, TDto>(page, pageSize, _mapper);
         }
 
-        public async Task<PagedList<TEntity>> QueryAsync(
+        public async Task<PagedResult<TDto>> QueryAsync(
             int page,
             int pageSize,
-            string sortColumn,
-            string sortDirection,
-            Expression<Func<TEntity, bool>>? predicate = null)
-        {
-            return await QueryAsync(page, pageSize, sortColumn, sortDirection, predicate, null!);
-        }
-
-        public async Task<PagedList<TEntity>> QueryAsync(
-            int page,
-            int pageSize,
-            string sortColumn,
-            string sortDirection,
             Expression<Func<TEntity, bool>>? predicate = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
             params Expression<Func<TEntity, object>>[] includes)
         {
-            var _query = SetFiltersToQuery(predicate, includes);
+            var _query = SetFiltersToQuery(predicate, includes, orderBy);
 
-            var count = await _query.CountAsync();
-
-            IReadOnlyList<TEntity>? result = null;
-
-            if (string.IsNullOrEmpty(sortColumn))
-            {
-                result = await _query
-                 .OrderByDescending("CreatedDateUtc")
-                 .Skip(Skip(page, pageSize))
-                 .Take(pageSize)
-                 .ToListAsync();
-
-                return new PagedList<TEntity>(count, page, pageSize, sortColumn, sortDirection, result);
-            }
-
-            if (string.Equals(sortDirection, "desc", StringComparison.OrdinalIgnoreCase))
-            {
-                result = await _query
-                 .OrderByDescending(sortColumn.ToUpperCaseFirst())
-                 .Skip(Skip(page, pageSize))
-                 .Take(pageSize)
-                 .ToListAsync();
-
-                return new PagedList<TEntity>(count, page, pageSize, sortColumn, sortDirection, result);
-            }
-            else
-            {
-                result = await _query
-                 .OrderBy(sortColumn.ToUpperCaseFirst())
-                 .Skip(Skip(page, pageSize))
-                 .Take(pageSize)
-                 .ToListAsync();
-
-                return new PagedList<TEntity>(count, page, pageSize, sortColumn, sortDirection, result);
-            }
+            return await _query.GetPagedAsync<TEntity, TDto>(page, pageSize, _mapper);
         }
 
         public async Task<TEntity?> QueryFirstAsync(Expression<Func<TEntity, bool>>? predicate = null)
