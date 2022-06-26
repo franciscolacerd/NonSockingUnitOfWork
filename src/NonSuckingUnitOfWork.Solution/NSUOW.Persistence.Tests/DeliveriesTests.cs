@@ -36,7 +36,7 @@ namespace NSUOW.Persistence.Tests
         {
             string barcode = await GetAndAssertDeliveryAsync();
 
-            var delivery = await _unitOfWork.DeliveryRepository.QueryFirstAsync(x => x.BarCode == barcode);
+            var delivery = await _unitOfWork.DeliveryRepository.QueryFirstAsync(predicate: x => x.BarCode == barcode);
 
             delivery.Should().NotBeNull();
 
@@ -50,7 +50,7 @@ namespace NSUOW.Persistence.Tests
         {
             string barcode = await GetAndAssertDeliveryAsync();
 
-            var delivery = await _unitOfWork.DeliveryRepository.QueryFirstAsync(x => x.BarCode == barcode, include => include.Packages);
+            var delivery = await _unitOfWork.DeliveryRepository.QueryFirstAsync(predicate: x => x.BarCode == barcode, includes: x => x.Packages);
 
             delivery.Should().NotBeNull();
 
@@ -66,7 +66,10 @@ namespace NSUOW.Persistence.Tests
         [Test]
         public async Task Delivery_DeliveryGetPagedListByName_ReturnDeliveryWithPackages()
         {
-            var pagedDeliveries = await _unitOfWork.DeliveryRepository.QueryAsync(1, 20, predicate: x => x.ReceiverName == "francisco lacerda");
+            var pagedDeliveries = await _unitOfWork.DeliveryRepository.QueryAsync(
+                1,
+                20,
+                predicate: x => x.ReceiverName == "francisco lacerda");
 
             pagedDeliveries.Should().NotBeNull();
 
