@@ -22,7 +22,7 @@ Also, keep in mind that repository and unit of work with entity framework are an
 		
         Task UpdateAsync(TEntity entity);
 
-**Nice functionalities for quering, pagination,sorting, include and so on:**
+**Nice functionalities for quering, pagination, sorting, includes and so on:**
 
 
         Task<IReadOnlyList<TEntity>> QueryAsync(Expression<Func<TEntity, bool>>? predicate = null);
@@ -31,30 +31,22 @@ Also, keep in mind that repository and unit of work with entity framework are an
             Expression<Func<TEntity, bool>>? predicate = null,
             params Expression<Func<TEntity, object>>[]? includes);
 
-        Task<PagedList<TEntity>> QueryAsync(
+        Task<PagedResult<TDto>> QueryAsync(
             int page,
             int pageSize,
             Expression<Func<TEntity, bool>>? predicate = null);
 
-        Task<PagedList<TEntity>> QueryAsync(
+        Task<PagedResult<TDto>> QueryAsync(
             int page,
             int pageSize,
             Expression<Func<TEntity, bool>>? predicate = null,
             params Expression<Func<TEntity, object>>[]? includes);
 
-        Task<PagedList<TEntity>> QueryAsync(
-           int page,
-           int pageSize,
-           string sortColumn,
-           string sortDirection,
-           Expression<Func<TEntity, bool>>? predicate = null);
-
-        Task<PagedList<TEntity>> QueryAsync(
+        Task<PagedResult<TDto>> QueryAsync(
             int page,
             int pageSize,
-            string sortColumn,
-            string sortDirection,
             Expression<Func<TEntity, bool>>? predicate = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
             params Expression<Func<TEntity, object>>[] includes);
 
         Task<TEntity?> QueryFirstAsync(Expression<Func<TEntity, bool>>? predicate = null);
@@ -104,6 +96,18 @@ And then:
 *Query for entity with child include:*
 
 `var delivery = await _unitOfWork.DeliveryRepository.QueryFirstAsync(x => x.BarCode == barcode, include => include.Packages)`
+
+*Query for entity list:*
+
+`var pagedDeliveries = await _unitOfWork.DeliveryRepository.QueryAsync(1, 20, predicate: x => x.ReceiverName == "francisco lacerda");`
+
+*Query for entity list with child include:*
+
+`var pagedDeliveries = await _unitOfWork.DeliveryRepository.QueryAsync(1, 20, predicate: x => x.ReceiverName == "francisco lacerda", includes: x => x.Packages);`
+
+*Query for entity list with child include order by CreatedDateUtc:*
+
+`var pagedDeliveries = await _unitOfWork.DeliveryRepository.QueryAsync(1, 20, predicate: x => x.ReceiverName == "francisco lacerda", orderBy: x => x.OrderBy(y => y.CreatedDateUtc), includes: x => x.Packages);`
 
 -----
 
