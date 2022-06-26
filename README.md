@@ -58,8 +58,8 @@ Also, keep in mind that repository and unit of work with entity framework are an
             
     public interface IUnitOfWork : IDisposable
     {
-        IGenericRepository<Delivery, NsuowDbContext> DeliveryRepository { get; }
-        IGenericRepository<Package, NsuowDbContext> PackageRepository { get; }
+        IGenericRepository<Delivery, DeliveryDto, NsuowDbContext> DeliveryRepository { get; }
+        IGenericRepository<Package, PackageDto, NsuowDbContext> PackageRepository { get; }
 
         Task BeginTransactionAsync(CancellationToken cancellationToken = default);
         Task CommitTransactionAsync(CancellationToken cancellationToken = default);
