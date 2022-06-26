@@ -105,7 +105,10 @@ And then:
 
 `var delivery = await _unitOfWork.DeliveryRepository.QueryFirstAsync(x => x.BarCode == barcode, include => include.Packages)`
 
+-----
 
-More documentation in the near future.
+**NOTE:**
 
->More unit tests in the near future (sorry red, green, refactor...).
+Interfaces (IGenericRepository and IGenericRepositor ) are in Infrastructure/Persistence layer because of generic Unit Of Work and generic Repository which implements TEntity of type BaseDomainEntity. If implemented in Core/Application Layer as it should, it would cause cyclic dependency. 
+
+
