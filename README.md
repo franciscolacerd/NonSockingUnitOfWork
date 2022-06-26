@@ -91,11 +91,11 @@ And then:
 
 *Query for entity:*
 
-`var delivery = await _unitOfWork.DeliveryRepository.QueryFirstAsync(x => x.BarCode == barcode)`
+`var delivery = await _unitOfWork.DeliveryRepository.QueryFirstAsync(predicate: x => x.BarCode == barcode)`
 
 *Query for entity with child include:*
 
-`var delivery = await _unitOfWork.DeliveryRepository.QueryFirstAsync(x => x.BarCode == barcode, include => include.Packages)`
+`var delivery = await _unitOfWork.DeliveryRepository.QueryFirstAsync(predicate: x => x.BarCode == barcode, includes: x => x.Packages)`
 
 *Query for entity list:*
 
