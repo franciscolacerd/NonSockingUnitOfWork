@@ -33,16 +33,24 @@ namespace NSUOW.Persistence.Repositories
             return entityEntry.Entity;
         }
 
-        public async Task DeleteAsync(TEntity entity)
+        public async Task UpdateAsync(TEntity entity)
         {
-            var dbSet = _dbContext.Set<TEntity>();
+            var entityToUpdate = await GetByIdAsync(entity.Id);
 
-            var entitytoDelete = await dbSet.FindAsync(new object[] { entity.Id });
+            if (entityToUpdate == null)
+                return;
+
+            _dbContext.Entry(entityToUpdate).CurrentValues.SetValues(entity);
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var entitytoDelete = await GetByIdAsync(id);
 
             if (entitytoDelete == null)
                 return;
 
-            dbSet.Remove(entity);
+            _dbContext.Remove(entitytoDelete);
         }
 
         public async Task<IReadOnlyList<TEntity>> GetAllAsync()
@@ -52,6 +60,7 @@ namespace NSUOW.Persistence.Repositories
                 .AsNoTracking()
                 .ToListAsync();
         }
+
         public async Task<TEntity?> GetByIdAsync(int id)
         {
             var key = _dbContext.Model.FindEntityType(typeof(TEntity))?.FindPrimaryKey()?.Properties.Single().Name;
@@ -60,7 +69,7 @@ namespace NSUOW.Persistence.Repositories
 
             return await _dbContext
                 .Set<TEntity>()
-                .AsNoTracking()
+                //.AsNoTracking()
                 .Where(x => id.Equals(EF.Property<long>(x, key)))
                 .FirstOrDefaultAsync();
         }
@@ -124,13 +133,6 @@ namespace NSUOW.Persistence.Repositories
             var _query = SetFiltersToQuery(predicate, includes);
 
             return await _query.FirstOrDefaultAsync();
-        }
-
-        public async Task UpdateAsync(TEntity entity)
-        {
-            await _dbContext
-                 .Set<TEntity>()
-                 .FindAsync(new object[] { entity.Id });
         }
     }
 }

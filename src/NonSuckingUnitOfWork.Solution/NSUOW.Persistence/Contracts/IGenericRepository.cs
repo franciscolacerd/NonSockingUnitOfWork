@@ -14,7 +14,7 @@ namespace NSUOW.Persistence.Contracts
 
         Task<TEntity> AddAsync(TEntity entity);
 
-        Task DeleteAsync(TEntity entity);
+        Task DeleteAsync(int id);
         Task<IReadOnlyList<TEntity>> GetAllAsync();
 
         Task<TEntity?> GetByIdAsync(int id);

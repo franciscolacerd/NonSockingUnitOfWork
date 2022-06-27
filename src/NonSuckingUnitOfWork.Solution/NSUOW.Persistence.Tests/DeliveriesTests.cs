@@ -5,6 +5,7 @@ using NSUOW.Persistence.Contracts;
 using NSUOW.Persistence.Tests.Common;
 using NUnit.Framework;
 using ServicesApi.Services.Tests.Strapper;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -29,6 +30,59 @@ namespace NSUOW.Persistence.Tests
         public async Task Delivery_CreateDeliveryWithPackages_ReturnDelivery()
         {
             await GetAndAssertDeliveryAsync();
+        }
+
+        [Test]
+        public async Task Delivery_UpdateDeliveryChangeDeliveryDate_ReturnDelivery()
+        {
+            string barcode = await GetAndAssertDeliveryAsync();
+
+            var deliveryDate = DateTime.UtcNow.AddDays(2);
+
+            var delivery = await _unitOfWork.DeliveryRepository.QueryFirstAsync(predicate: x => x.BarCode == barcode);
+
+            delivery.Should().NotBeNull();
+
+            delivery.DeliveryDate = deliveryDate;
+
+            await _unitOfWork.DeliveryRepository.UpdateAsync(delivery);
+
+            await _unitOfWork.SaveChangesAsync();
+
+            delivery = await _unitOfWork.DeliveryRepository.QueryFirstAsync(predicate: x => x.BarCode == barcode);
+
+            delivery.Should().NotBeNull();
+
+            delivery.DeliveryDate.Should().Be(deliveryDate);
+        }
+
+        [Test]
+        public async Task Delivery_DeleteDeliveryChangeDeliveryDate_ReturnDelivery()
+        {
+            string barcode = await GetAndAssertDeliveryAsync();
+
+            var delivery = await _unitOfWork.DeliveryRepository.QueryFirstAsync(predicate: x => x.BarCode == barcode);
+
+            delivery.Should().NotBeNull();
+
+            await _unitOfWork.DeliveryRepository.DeleteAsync(delivery.Id);
+
+            await _unitOfWork.SaveChangesAsync();
+
+            delivery = await _unitOfWork.DeliveryRepository.QueryFirstAsync(predicate: x => x.BarCode == barcode);
+
+            delivery.Should().BeNull();
+        }
+
+
+        [Test]
+        public async Task Delivery_DeliveryGetById_ReturnDelivery()
+        {
+            var service = await GetAndAssertDeliveryAsync(GetBarcode());
+
+            var delivery = await _unitOfWork.DeliveryRepository.GetByIdAsync(service.Id);
+
+            delivery.Should().NotBeNull();
         }
 
         [Test]
