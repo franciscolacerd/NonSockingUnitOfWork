@@ -373,5 +373,33 @@ namespace NSUOW.Persistence.Tests
             pagedDeliveries.Results.First().Packages.Should().HaveCountGreaterThan(0);
         }
 
+        [Test]
+
+        public async Task Delivery_CreateServicesWithTransaction_TransactionsSuccess()
+        {
+            var delivery = GetDummyDelivery(GetBarcode());
+
+            await _unitOfWork.BeginTransactionAsync();
+
+            var result1 = await _unitOfWork.DeliveryRepository.AddAsync(delivery);
+
+            result1.Should().NotBeNull();
+
+            var result2 = await _unitOfWork.DeliveryRepository.AddAsync(delivery);
+
+            result2.Should().NotBeNull();
+
+            await _unitOfWork.CommitTransactionAsync();
+
+            await _unitOfWork.CompleteAsync();
+
+            var delivery1 = await _unitOfWork.DeliveryRepository.GetByIdAsync(result1.Id);
+
+            delivery1.Should().NotBeNull();
+
+            var delivery2 = await _unitOfWork.DeliveryRepository.GetByIdAsync(result2.Id);
+
+            delivery2.Should().NotBeNull();
+        }
     }
 }
