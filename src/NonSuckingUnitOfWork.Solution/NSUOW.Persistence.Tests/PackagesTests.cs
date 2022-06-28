@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace NSUOW.Persistence.Tests
 {
-    public class DeliveryTests : BaseTest
+    public class PackagesTests : BaseTest
     {
 
         private ServiceProvider _serviceProvider;
@@ -25,7 +25,7 @@ namespace NSUOW.Persistence.Tests
         }
 
         [Test]
-        public async Task Delivery_DeliveryGetByBarCode_ReturnDeliveryWithPackages()
+        public async Task Package_PackageGetById_ReturnPackageWithDeliveryAsync()
         {
             var delivery = await GetAndAssertDeliveryAsync(GetBarcode());
 
