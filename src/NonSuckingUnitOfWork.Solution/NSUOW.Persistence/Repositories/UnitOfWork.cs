@@ -55,6 +55,13 @@ namespace NSUOW.Persistence.Repositories
             return await CompleteAsync(cancellationToken);
         }
 
+        public int SaveChanges()
+        {
+            var username = _httpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.Name)?.Value;
+
+            return _context.SaveChanges(username);
+        }
+
         public void Dispose()
         {
             Dispose(true);

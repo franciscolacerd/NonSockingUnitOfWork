@@ -76,5 +76,25 @@ namespace NSUOW.Application.Extensions
 
             return result;
         }
+
+        public static PagedResult<U> GetPaged<T, U>(this IQueryable<T> query,
+                                          int page, int pageSize, IMapper mapper) where U : class
+        {
+            var result = new PagedResult<U>();
+            result.CurrentPage = page;
+            result.PageSize = pageSize;
+            result.RowCount = query.Count();
+
+            var pageCount = (double)result.RowCount / pageSize;
+            result.PageCount = (int)Math.Ceiling(pageCount);
+
+            var skip = (page - 1) * pageSize;
+            result.Results =  query.Skip(skip)
+                                  .Take(pageSize)
+                                  .ProjectTo<U>(mapper.ConfigurationProvider)
+                                  .ToList();
+
+            return result;
+        }
     }
 }

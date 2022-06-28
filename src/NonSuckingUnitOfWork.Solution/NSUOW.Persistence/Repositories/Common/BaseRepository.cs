@@ -15,26 +15,33 @@ namespace NSUOW.Persistence.Repositories.Common
             _dbContext = dbContext;
         }
 
-        public IQueryable<TEntity> SetFiltersToQuery(Expression<Func<TEntity, bool>>? predicate)
+        public IQueryable<TEntity> SetFiltersToQuery(
+            TrackChanges trackChanges,
+            Expression<Func<TEntity, bool>>? predicate)
         {
-            return SetFiltersToQuery(predicate, null);
+            return SetFiltersToQuery(trackChanges, predicate, null);
         }
 
         public IQueryable<TEntity> SetFiltersToQuery(
+             TrackChanges trackChanges,
              Expression<Func<TEntity, bool>>? predicate,
              Expression<Func<TEntity, object>>[]? includes)
         {
-            return SetFiltersToQuery(predicate, includes, null);
+            return SetFiltersToQuery(trackChanges, predicate, includes, null);
         }
 
         public IQueryable<TEntity> SetFiltersToQuery(
+             TrackChanges trackChanges,
              Expression<Func<TEntity, bool>>? predicate,
              Expression<Func<TEntity, object>>[]? includes,
              Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null)
         {
             var dbSet = _dbContext.Set<TEntity>();
 
-            var _query = dbSet.AsNoTracking();
+            IQueryable<TEntity> _query = dbSet;
+
+            if (trackChanges == TrackChanges.AsNoTracking)
+                _query = _query.AsNoTracking();
 
             if (predicate != null)
                 _query = _query.Where(predicate);

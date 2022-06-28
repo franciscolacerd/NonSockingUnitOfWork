@@ -25,6 +25,15 @@ namespace NSUOW.Persistence.Tests.Common
             return barcode;
         }
 
+        protected string GetAndAssertDelivery()
+        {
+            var barcode = GetBarcode();
+
+            GetAndAssertDelivery(barcode);
+
+            return barcode;
+        }
+
         protected static string GetBarcode()
         {
             return 15.ToRandomStringOfInts();
@@ -47,6 +56,22 @@ namespace NSUOW.Persistence.Tests.Common
             return _mapper.Map<DeliveryDto>(result);
         }
 
+        protected DeliveryDto GetAndAssertDelivery(string barcode)
+        {
+            var delivery = GetDummyDelivery(barcode);
+
+            var result = _unitOfWork.DeliveryRepository.Add(delivery);
+
+            _unitOfWork.SaveChanges();
+
+            result.Should().NotBeNull();
+
+            result.BarCode.Should().NotBeNull();
+
+            result.BarCode.Should().BeEquivalentTo(barcode);
+
+            return _mapper.Map<DeliveryDto>(result);
+        }
 
         protected static Delivery GetDummyDelivery(string barcode)
         {

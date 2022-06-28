@@ -13,5 +13,6 @@ namespace NSUOW.Persistence.Contracts
         Task CommitTransactionAsync(CancellationToken cancellationToken = default);
         Task<int> CompleteAsync(CancellationToken cancellationToken = default);
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+        int SaveChanges();
     }
 }
