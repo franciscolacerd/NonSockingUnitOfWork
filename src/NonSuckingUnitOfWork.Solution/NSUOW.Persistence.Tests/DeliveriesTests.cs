@@ -381,25 +381,25 @@ namespace NSUOW.Persistence.Tests
 
             await _unitOfWork.BeginTransactionAsync();
 
-            var result1 = await _unitOfWork.DeliveryRepository.AddAsync(delivery);
+            var firstDelivery = await _unitOfWork.DeliveryRepository.AddAsync(delivery);
 
-            result1.Should().NotBeNull();
+            firstDelivery.Should().NotBeNull();
 
-            var result2 = await _unitOfWork.DeliveryRepository.AddAsync(delivery);
+            var secondDelivery = await _unitOfWork.DeliveryRepository.AddAsync(delivery);
 
-            result2.Should().NotBeNull();
+            secondDelivery.Should().NotBeNull();
 
             await _unitOfWork.CommitTransactionAsync();
 
             await _unitOfWork.CompleteAsync();
 
-            var delivery1 = await _unitOfWork.DeliveryRepository.GetByIdAsync(result1.Id);
+            var firstDeliveryCreated = await _unitOfWork.DeliveryRepository.GetByIdAsync(firstDelivery.Id);
 
-            delivery1.Should().NotBeNull();
+            firstDeliveryCreated.Should().NotBeNull();
 
-            var delivery2 = await _unitOfWork.DeliveryRepository.GetByIdAsync(result2.Id);
+            var secondDeliveryCreated = await _unitOfWork.DeliveryRepository.GetByIdAsync(secondDelivery.Id);
 
-            delivery2.Should().NotBeNull();
+            secondDeliveryCreated.Should().NotBeNull();
         }
     }
 }
