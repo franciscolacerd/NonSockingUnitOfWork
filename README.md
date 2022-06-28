@@ -53,6 +53,10 @@ Also, keep in mind that repository and unit of work with entity framework are an
 
         Task<TEntity?> QueryFirstAsync(Expression<Func<TEntity, bool>>? predicate = null,
             params Expression<Func<TEntity, object>>[]? includes);
+	    
+	Task<TEntity?> QueryFirstAsync(Expression<Func<TEntity, bool>>? predicate = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+            params Expression<Func<TEntity, object>>[]? includes);    
             
 **The generic unit of work:**            
             
@@ -108,6 +112,18 @@ And then:
 *Query for entity list with child include order by CreatedDateUtc:*
 
 `var pagedDeliveries = await _unitOfWork.DeliveryRepository.QueryAsync(1, 20, predicate: x => x.ReceiverName == "francisco lacerda", orderBy: x => x.OrderBy(y => y.CreatedDateUtc), includes: x => x.Packages);`
+
+*Use transactions:*
+
+	await _unitOfWork.BeginTransactionAsync();
+
+	var firstDelivery = await _unitOfWork.DeliveryRepository.AddAsync(delivery);
+
+	var secondDelivery = await _unitOfWork.DeliveryRepository.AddAsync(delivery);
+
+	await _unitOfWork.CommitTransactionAsync();
+	
+	await _unitOfWork.CompleteAsync();
 
 -----
 
