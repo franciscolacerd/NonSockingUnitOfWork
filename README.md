@@ -129,6 +129,6 @@ And then:
 
 **NOTE:**
 
-Interfaces (IGenericRepository and IGenericRepositor ) are in Infrastructure/Persistence layer because of generic Unit Of Work and generic Repository which implements TEntity of type BaseDomainEntity. If implemented in Core/Application Layer as it should, it would cause cyclic dependency. 
+Interfaces (IGenericRepository and IGenericRepositor) are in Infrastructure/Persistence layer because of generic Unit Of Work and generic Repository which implements TEntity of type BaseDomainEntity. If implemented in Core/Application Layer as it should, it would cause cyclic dependency. 
 
 
