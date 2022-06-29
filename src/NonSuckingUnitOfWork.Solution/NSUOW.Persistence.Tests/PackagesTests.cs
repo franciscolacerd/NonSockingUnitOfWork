@@ -12,14 +12,6 @@ namespace NSUOW.Persistence.Tests
     {
         private ServiceProvider _serviceProvider;
 
-        [SetUp]
-        public void Setup()
-        {
-            _serviceProvider = Bootstrapper.Bind();
-
-            _unitOfWork = _serviceProvider.GetRequiredService<IUnitOfWork>();
-        }
-
         [Test]
         public async Task Package_PackageGetById_ReturnPackageWithDeliveryAsync()
         {
@@ -28,6 +20,14 @@ namespace NSUOW.Persistence.Tests
             var package = await _unitOfWork.PackageRepository.QueryFirstAsync(x => x.DeliveryId == dummyDelivery.Id);
 
             package.Should().NotBeNull();
+        }
+
+        [SetUp]
+        public void Setup()
+        {
+            _serviceProvider = Bootstrapper.Bind();
+
+            _unitOfWork = _serviceProvider.GetRequiredService<IUnitOfWork>();
         }
     }
 }
