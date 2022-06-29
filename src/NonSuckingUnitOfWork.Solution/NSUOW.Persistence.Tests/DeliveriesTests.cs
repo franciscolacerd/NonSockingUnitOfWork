@@ -138,8 +138,8 @@ namespace NSUOW.Persistence.Tests
         public async Task Delivery_DeliveryGetPagedListByName_ReturnDeliveryWithPackagesAsync()
         {
             var pagedDeliveries = await _unitOfWork.DeliveryRepository.QueryAsync(
-                1,
-                20,
+                page: 1,
+                pageSize: 20,
                 predicate: x => x.ReceiverName == "francisco lacerda");
 
             pagedDeliveries.Should().NotBeNull();
@@ -155,8 +155,8 @@ namespace NSUOW.Persistence.Tests
         public async Task Delivery_DeliveryGetPagedListByNameIncludeChild_ReturnDeliveryWithPackagesAsync()
         {
             var pagedDeliveries = await _unitOfWork.DeliveryRepository.QueryAsync(
-                1,
-                20,
+                page: 1,
+                pageSize: 20,
                 predicate: x => x.ReceiverName == "francisco lacerda",
                 includes: x => x.Packages);
 
@@ -177,8 +177,8 @@ namespace NSUOW.Persistence.Tests
         public async Task Delivery_DeliveryGetPagedListByNameIncludeChildOrderByCreateDateUtc_ReturnDeliveryWithPackagesAsync()
         {
             var pagedDeliveries = await _unitOfWork.DeliveryRepository.QueryAsync(
-                1,
-                20,
+                page: 1,
+                pageSize: 20,
                 predicate: x => x.ReceiverName == "francisco lacerda",
                 orderBy: x => x.OrderBy(y => y.CreatedDateUtc),
                 includes: x => x.Packages);
@@ -313,8 +313,8 @@ namespace NSUOW.Persistence.Tests
         public void Delivery_DeliveryGetPagedListByName_ReturnDeliveryWithPackages()
         {
             var pagedDeliveries = _unitOfWork.DeliveryRepository.Query(
-                1,
-                20,
+                page: 1,
+                pageSize: 20,
                 predicate: x => x.ReceiverName == "francisco lacerda");
 
             pagedDeliveries.Should().NotBeNull();
@@ -330,8 +330,8 @@ namespace NSUOW.Persistence.Tests
         public void Delivery_DeliveryGetPagedListByNameIncludeChild_ReturnDeliveryWithPackages()
         {
             var pagedDeliveries = _unitOfWork.DeliveryRepository.Query(
-                1,
-                20,
+                page: 1,
+                pageSize: 20,
                 predicate: x => x.ReceiverName == "francisco lacerda",
                 includes: x => x.Packages);
 
@@ -352,8 +352,8 @@ namespace NSUOW.Persistence.Tests
         public void Delivery_DeliveryGetPagedListByNameIncludeChildOrderByCreateDateUtc_ReturnDeliveryWithPackages()
         {
             var pagedDeliveries = _unitOfWork.DeliveryRepository.Query(
-                1,
-                20,
+                page: 1,
+                pageSize: 20,
                 predicate: x => x.ReceiverName == "francisco lacerda",
                 orderBy: x => x.OrderBy(y => y.CreatedDateUtc),
                 includes: x => x.Packages);
