@@ -14,6 +14,8 @@ namespace NSUOW.Persistence.Tests
     {
         private ServiceProvider _serviceProvider;
 
+        private readonly string _receiverName = "francisco lacerda";
+
         [Test]
         public void Delivery_CreateDeliveryWithPackages_ReturnDelivery()
         {
@@ -250,7 +252,7 @@ namespace NSUOW.Persistence.Tests
             var pagedDeliveries = _unitOfWork.DeliveryRepository.Query(
                 page: 1,
                 pageSize: 20,
-                predicate: x => x.ReceiverName == "francisco lacerda");
+                predicate: x => x.ReceiverName == _receiverName);
 
             pagedDeliveries.Should().NotBeNull();
 
@@ -267,7 +269,7 @@ namespace NSUOW.Persistence.Tests
             var pagedDeliveries = await _unitOfWork.DeliveryRepository.QueryAsync(
                 page: 1,
                 pageSize: 20,
-                predicate: x => x.ReceiverName == "francisco lacerda");
+                predicate: x => x.ReceiverName == _receiverName);
 
             pagedDeliveries.Should().NotBeNull();
 
@@ -284,7 +286,7 @@ namespace NSUOW.Persistence.Tests
             var pagedDeliveries = _unitOfWork.DeliveryRepository.Query(
                 page: 1,
                 pageSize: 20,
-                predicate: x => x.ReceiverName == "francisco lacerda",
+                predicate: x => x.ReceiverName == _receiverName,
                 includes: x => x.Packages);
 
             pagedDeliveries.Should().NotBeNull();
@@ -306,7 +308,7 @@ namespace NSUOW.Persistence.Tests
             var pagedDeliveries = await _unitOfWork.DeliveryRepository.QueryAsync(
                 page: 1,
                 pageSize: 20,
-                predicate: x => x.ReceiverName == "francisco lacerda",
+                predicate: x => x.ReceiverName == _receiverName,
                 includes: x => x.Packages);
 
             pagedDeliveries.Should().NotBeNull();
@@ -328,7 +330,7 @@ namespace NSUOW.Persistence.Tests
             var pagedDeliveries = _unitOfWork.DeliveryRepository.Query(
                 page: 1,
                 pageSize: 20,
-                predicate: x => x.ReceiverName == "francisco lacerda",
+                predicate: x => x.ReceiverName == _receiverName,
                 orderBy: x => x.OrderBy(y => y.CreatedDateUtc),
                 includes: x => x.Packages);
 
@@ -351,7 +353,7 @@ namespace NSUOW.Persistence.Tests
             var pagedDeliveries = await _unitOfWork.DeliveryRepository.QueryAsync(
                 page: 1,
                 pageSize: 20,
-                predicate: x => x.ReceiverName == "francisco lacerda",
+                predicate: x => x.ReceiverName == _receiverName,
                 orderBy: x => x.OrderBy(y => y.CreatedDateUtc),
                 includes: x => x.Packages);
 
