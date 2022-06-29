@@ -101,17 +101,21 @@ And then:
 
 `var delivery = await _unitOfWork.DeliveryRepository.QueryFirstAsync(predicate: x => x.BarCode == barcode, includes: x => x.Packages)`
 
+*Query for entity with child include and order by CreatedDateUtc:*
+
+`var delivery = await _unitOfWork.DeliveryRepository.QueryFirstAsync(predicate: x => x.BarCode == barcode, orderBy: x => x.OrderBy(y => y.CreatedDateUtc), includes: x => x.Packages)`
+
 *Query for entity list:*
 
-`var pagedDeliveries = await _unitOfWork.DeliveryRepository.QueryAsync(1, 20, predicate: x => x.ReceiverName == "francisco lacerda");`
+`var pagedDeliveries = await _unitOfWork.DeliveryRepository.QueryAsync(page: 1, pageSize: 20, predicate: x => x.ReceiverName == "francisco lacerda");`
 
 *Query for entity list with child include:*
 
-`var pagedDeliveries = await _unitOfWork.DeliveryRepository.QueryAsync(1, 20, predicate: x => x.ReceiverName == "francisco lacerda", includes: x => x.Packages);`
+`var pagedDeliveries = await _unitOfWork.DeliveryRepository.QueryAsync(page: 1, pageSize: 20, predicate: x => x.ReceiverName == "francisco lacerda", includes: x => x.Packages);`
 
-*Query for entity list with child include order by CreatedDateUtc:*
+*Query for entity list with child include and order by CreatedDateUtc:*
 
-`var pagedDeliveries = await _unitOfWork.DeliveryRepository.QueryAsync(1, 20, predicate: x => x.ReceiverName == "francisco lacerda", orderBy: x => x.OrderBy(y => y.CreatedDateUtc), includes: x => x.Packages);`
+`var pagedDeliveries = await _unitOfWork.DeliveryRepository.QueryAsync(page: 1, pageSize: 20, predicate: x => x.ReceiverName == "francisco lacerda", orderBy: x => x.OrderBy(y => y.CreatedDateUtc), includes: x => x.Packages);`
 
 *Use transactions:*
 
