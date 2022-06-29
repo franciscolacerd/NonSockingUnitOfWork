@@ -7,12 +7,13 @@ namespace NSUOW.Persistence.Tests.Common
 {
     public class DeliveryBuilder
     {
-        private Delivery _delivery = new Delivery();
+        private Delivery _delivery;
         private string _barcode;
         private decimal _totalWeight;
 
         public DeliveryBuilder()
         {
+            this._delivery = new Delivery();
         }
 
         public DeliveryBuilder WithBarcode(string barcode)
