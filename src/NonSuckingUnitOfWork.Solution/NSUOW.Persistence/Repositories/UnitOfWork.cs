@@ -43,11 +43,28 @@ namespace NSUOW.Persistence.Repositories
             await _transaction.CommitAsync(cancellationToken);
         }
 
+        public void BeginTransaction()
+        {
+            _transaction =  _context.Database.BeginTransaction();
+        }
+
+        public void CommitTransaction()
+        {
+            _transaction.Commit();
+        }
+
         public async Task<int> CompleteAsync(CancellationToken cancellationToken = default)
         {
             var username = _httpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.Name)?.Value;
 
             return await _context.SaveChangesAsync(username, cancellationToken);
+        }
+
+        public int Complete()
+        {
+            var username = _httpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.Name)?.Value;
+
+            return _context.SaveChanges(username);
         }
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -57,9 +74,7 @@ namespace NSUOW.Persistence.Repositories
 
         public int SaveChanges()
         {
-            var username = _httpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.Name)?.Value;
-
-            return _context.SaveChanges(username);
+            return Complete();
         }
 
         public void Dispose()

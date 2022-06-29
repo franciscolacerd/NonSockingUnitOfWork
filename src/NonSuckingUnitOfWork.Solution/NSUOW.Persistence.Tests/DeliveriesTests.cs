@@ -1,4 +1,3 @@
-using AutoMapper;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using NSUOW.Persistence.Contracts;
@@ -13,7 +12,6 @@ namespace NSUOW.Persistence.Tests
 {
     public class DeliveriesTests : BaseTest
     {
-
         private ServiceProvider _serviceProvider;
 
         [SetUp]
@@ -22,8 +20,6 @@ namespace NSUOW.Persistence.Tests
             _serviceProvider = Bootstrapper.Bind();
 
             _unitOfWork = _serviceProvider.GetRequiredService<IUnitOfWork>();
-
-            _mapper = _serviceProvider.GetRequiredService<IMapper>();
         }
 
         [Test]
@@ -35,52 +31,49 @@ namespace NSUOW.Persistence.Tests
         [Test]
         public async Task Delivery_UpdateDeliveryChangeDeliveryDate_ReturnDeliveryAsync()
         {
-            string barcode = await GetAndAssertDeliveryAsync();
+            var dummyDelivery = await GetAndAssertDeliveryAsync();
 
             var deliveryDate = DateTime.UtcNow.AddDays(2);
 
-            var delivery = await _unitOfWork.DeliveryRepository.QueryFirstAsync(predicate: x => x.BarCode == barcode);
+            dummyDelivery.Should().NotBeNull();
 
-            delivery.Should().NotBeNull();
+            dummyDelivery.DeliveryDate = deliveryDate;
 
-            delivery.DeliveryDate = deliveryDate;
-
-            await _unitOfWork.DeliveryRepository.UpdateAsync(delivery);
+            await _unitOfWork.DeliveryRepository.UpdateAsync(dummyDelivery);
 
             await _unitOfWork.SaveChangesAsync();
 
-            delivery = await _unitOfWork.DeliveryRepository.QueryFirstAsync(predicate: x => x.BarCode == barcode);
+            var updatedDelivery = await _unitOfWork.DeliveryRepository.QueryFirstAsync(
+                predicate: x => x.BarCode == dummyDelivery.BarCode);
 
-            delivery.Should().NotBeNull();
+            updatedDelivery.Should().NotBeNull();
 
-            delivery.DeliveryDate.Should().Be(deliveryDate);
+            updatedDelivery.DeliveryDate.Should().Be(deliveryDate);
         }
 
         [Test]
         public async Task Delivery_DeleteDeliveryChangeDeliveryDate_ReturnDeliveryAsync()
         {
-            string barcode = await GetAndAssertDeliveryAsync();
+            var dummyDelivery = await GetAndAssertDeliveryAsync();
 
-            var delivery = await _unitOfWork.DeliveryRepository.QueryFirstAsync(predicate: x => x.BarCode == barcode);
+            dummyDelivery.Should().NotBeNull();
 
-            delivery.Should().NotBeNull();
-
-            await _unitOfWork.DeliveryRepository.DeleteAsync(delivery.Id);
+            await _unitOfWork.DeliveryRepository.DeleteAsync(dummyDelivery.Id);
 
             await _unitOfWork.SaveChangesAsync();
 
-            delivery = await _unitOfWork.DeliveryRepository.QueryFirstAsync(predicate: x => x.BarCode == barcode);
+            var deletedDelivery = await _unitOfWork.DeliveryRepository.QueryFirstAsync(
+                predicate: x => x.BarCode == dummyDelivery.BarCode);
 
-            delivery.Should().BeNull();
+            deletedDelivery.Should().BeNull();
         }
-
 
         [Test]
         public async Task Delivery_DeliveryGetById_ReturnDeliveryAsync()
         {
-            var service = await GetAndAssertDeliveryAsync(GetBarcode());
+            var dummyDelivery = await GetAndAssertDeliveryAsync();
 
-            var delivery = await _unitOfWork.DeliveryRepository.GetByIdAsync(service.Id);
+            var delivery = await _unitOfWork.DeliveryRepository.GetByIdAsync(dummyDelivery.Id);
 
             delivery.Should().NotBeNull();
         }
@@ -88,29 +81,32 @@ namespace NSUOW.Persistence.Tests
         [Test]
         public async Task Delivery_DeliveryGetByBarCode_ReturnDeliveryAsync()
         {
-            string barcode = await GetAndAssertDeliveryAsync();
+            var dummyDelivery = await GetAndAssertDeliveryAsync();
 
-            var delivery = await _unitOfWork.DeliveryRepository.QueryFirstAsync(predicate: x => x.BarCode == barcode);
+            var delivery = await _unitOfWork.DeliveryRepository.QueryFirstAsync(
+                predicate: x => x.BarCode == dummyDelivery.BarCode);
 
             delivery.Should().NotBeNull();
 
             delivery.BarCode.Should().NotBeNull();
 
-            delivery.BarCode.Should().BeEquivalentTo(barcode);
+            delivery.BarCode.Should().BeEquivalentTo(dummyDelivery.BarCode);
         }
 
         [Test]
         public async Task Delivery_DeliveryGetByBarCodeIncludePackages_ReturnDeliveryWithPackagesAsync()
         {
-            string barcode = await GetAndAssertDeliveryAsync();
+            var dummyDelivery = await GetAndAssertDeliveryAsync();
 
-            var delivery = await _unitOfWork.DeliveryRepository.QueryFirstAsync(predicate: x => x.BarCode == barcode, includes: x => x.Packages);
+            var delivery = await _unitOfWork.DeliveryRepository.QueryFirstAsync(
+                predicate: x => x.BarCode == dummyDelivery.BarCode,
+                includes: x => x.Packages);
 
             delivery.Should().NotBeNull();
 
             delivery.BarCode.Should().NotBeNull();
 
-            delivery.BarCode.Should().BeEquivalentTo(barcode);
+            delivery.BarCode.Should().BeEquivalentTo(dummyDelivery.BarCode);
 
             delivery.Packages.Should().NotBeNull();
 
@@ -120,10 +116,10 @@ namespace NSUOW.Persistence.Tests
         [Test]
         public async Task Delivery_DeliveryGetByBarCodeIncludePackagesOrderBy_ReturnDeliveryWithPackagesAsync()
         {
-            string barcode = await GetAndAssertDeliveryAsync();
+            var dummyDelivery = await GetAndAssertDeliveryAsync();
 
             var delivery = await _unitOfWork.DeliveryRepository.QueryFirstAsync(
-                predicate: x => x.BarCode == barcode,
+                predicate: x => x.BarCode == dummyDelivery.BarCode,
                 orderBy: x => x.OrderByDescending(y => y.CreatedDateUtc),
                 includes: x => x.Packages);
 
@@ -131,7 +127,7 @@ namespace NSUOW.Persistence.Tests
 
             delivery.BarCode.Should().NotBeNull();
 
-            delivery.BarCode.Should().BeEquivalentTo(barcode);
+            delivery.BarCode.Should().BeEquivalentTo(dummyDelivery.BarCode);
 
             delivery.Packages.Should().NotBeNull();
 
@@ -209,11 +205,11 @@ namespace NSUOW.Persistence.Tests
         [Test]
         public void Delivery_UpdateDeliveryChangeDeliveryDate_ReturnDelivery()
         {
-            string barcode = GetAndAssertDelivery();
+            var dummyDelivery = GetAndAssertDelivery();
 
             var deliveryDate = DateTime.UtcNow.AddDays(2);
 
-            var delivery = _unitOfWork.DeliveryRepository.QueryFirst(predicate: x => x.BarCode == barcode);
+            var delivery = _unitOfWork.DeliveryRepository.QueryFirst(predicate: x => x.BarCode == dummyDelivery.BarCode);
 
             delivery.Should().NotBeNull();
 
@@ -223,7 +219,7 @@ namespace NSUOW.Persistence.Tests
 
             _unitOfWork.SaveChanges();
 
-            delivery =  _unitOfWork.DeliveryRepository.QueryFirst(predicate: x => x.BarCode == barcode);
+            delivery =  _unitOfWork.DeliveryRepository.QueryFirst(predicate: x => x.BarCode == dummyDelivery.BarCode);
 
             delivery.Should().NotBeNull();
 
@@ -233,9 +229,9 @@ namespace NSUOW.Persistence.Tests
         [Test]
         public void Delivery_DeleteDeliveryChangeDeliveryDate_ReturnDelivery()
         {
-            string barcode = GetAndAssertDelivery();
+            var dummyDelivery = GetAndAssertDelivery();
 
-            var delivery = _unitOfWork.DeliveryRepository.QueryFirst(predicate: x => x.BarCode == barcode);
+            var delivery = _unitOfWork.DeliveryRepository.QueryFirst(predicate: x => x.BarCode == dummyDelivery.BarCode);
 
             delivery.Should().NotBeNull();
 
@@ -243,7 +239,7 @@ namespace NSUOW.Persistence.Tests
 
             _unitOfWork.SaveChanges();
 
-            delivery = _unitOfWork.DeliveryRepository.QueryFirst(predicate: x => x.BarCode == barcode);
+            delivery = _unitOfWork.DeliveryRepository.QueryFirst(predicate: x => x.BarCode == dummyDelivery.BarCode);
 
             delivery.Should().BeNull();
         }
@@ -251,9 +247,9 @@ namespace NSUOW.Persistence.Tests
         [Test]
         public void Delivery_DeliveryGetById_ReturnDelivery()
         {
-            var service = GetAndAssertDelivery(GetBarcode());
+            var dummyDelivery = GetAndAssertDelivery();
 
-            var delivery = _unitOfWork.DeliveryRepository.GetById(service.Id);
+            var delivery = _unitOfWork.DeliveryRepository.GetById(dummyDelivery.Id);
 
             delivery.Should().NotBeNull();
         }
@@ -261,29 +257,31 @@ namespace NSUOW.Persistence.Tests
         [Test]
         public void Delivery_DeliveryGetByBarCode_ReturnDelivery()
         {
-            string barcode = GetAndAssertDelivery();
+            var dummyDelivery = GetAndAssertDelivery();
 
-            var delivery = _unitOfWork.DeliveryRepository.QueryFirst(predicate: x => x.BarCode == barcode);
+            var delivery = _unitOfWork.DeliveryRepository.QueryFirst(predicate: x => x.BarCode == dummyDelivery.BarCode);
 
             delivery.Should().NotBeNull();
 
             delivery.BarCode.Should().NotBeNull();
 
-            delivery.BarCode.Should().BeEquivalentTo(barcode);
+            delivery.BarCode.Should().BeEquivalentTo(dummyDelivery.BarCode);
         }
 
         [Test]
         public void Delivery_DeliveryGetByBarCodeIncludePackages_ReturnDeliveryWithPackages()
         {
-            string barcode = GetAndAssertDelivery();
+            var dummyDelivery = GetAndAssertDelivery();
 
-            var delivery = _unitOfWork.DeliveryRepository.QueryFirst(predicate: x => x.BarCode == barcode, includes: x => x.Packages);
+            var delivery = _unitOfWork.DeliveryRepository.QueryFirst(
+                predicate: x => x.BarCode == dummyDelivery.BarCode,
+                includes: x => x.Packages);
 
             delivery.Should().NotBeNull();
 
             delivery.BarCode.Should().NotBeNull();
 
-            delivery.BarCode.Should().BeEquivalentTo(barcode);
+            delivery.BarCode.Should().BeEquivalentTo(dummyDelivery.BarCode);
 
             delivery.Packages.Should().NotBeNull();
 
@@ -293,10 +291,10 @@ namespace NSUOW.Persistence.Tests
         [Test]
         public void Delivery_DeliveryGetByBarCodeIncludePackagesOrderBy_ReturnDeliveryWithPackages()
         {
-            string barcode = GetAndAssertDelivery();
+            var dummyDelivery = GetAndAssertDelivery();
 
             var delivery = _unitOfWork.DeliveryRepository.QueryFirst(
-                predicate: x => x.BarCode == barcode,
+                predicate: x => x.BarCode == dummyDelivery.BarCode,
                 orderBy: x => x.OrderByDescending(y => y.CreatedDateUtc),
                 includes: x => x.Packages);
 
@@ -304,7 +302,7 @@ namespace NSUOW.Persistence.Tests
 
             delivery.BarCode.Should().NotBeNull();
 
-            delivery.BarCode.Should().BeEquivalentTo(barcode);
+            delivery.BarCode.Should().BeEquivalentTo(dummyDelivery.BarCode);
 
             delivery.Packages.Should().NotBeNull();
 
@@ -374,18 +372,15 @@ namespace NSUOW.Persistence.Tests
         }
 
         [Test]
-
-        public async Task Delivery_CreateServicesWithTransaction_TransactionsSuccess()
+        public async Task Delivery_CreateServicesWithTransaction_TransactionsSuccessAsync()
         {
-            var delivery = GetDummyDelivery(GetBarcode());
-
             await _unitOfWork.BeginTransactionAsync();
 
-            var firstDelivery = await _unitOfWork.DeliveryRepository.AddAsync(delivery);
+            var firstDelivery = await _unitOfWork.DeliveryRepository.AddAsync(Build());
 
             firstDelivery.Should().NotBeNull();
 
-            var secondDelivery = await _unitOfWork.DeliveryRepository.AddAsync(delivery);
+            var secondDelivery = await _unitOfWork.DeliveryRepository.AddAsync(Build());
 
             secondDelivery.Should().NotBeNull();
 
@@ -398,6 +393,32 @@ namespace NSUOW.Persistence.Tests
             firstDeliveryCreated.Should().NotBeNull();
 
             var secondDeliveryCreated = await _unitOfWork.DeliveryRepository.GetByIdAsync(secondDelivery.Id);
+
+            secondDeliveryCreated.Should().NotBeNull();
+        }
+
+        [Test]
+        public void Delivery_CreateServicesWithTransaction_TransactionsSuccess()
+        {
+            _unitOfWork.BeginTransaction();
+
+            var firstDelivery = _unitOfWork.DeliveryRepository.Add(Build());
+
+            firstDelivery.Should().NotBeNull();
+
+            var secondDelivery = _unitOfWork.DeliveryRepository.Add(Build());
+
+            secondDelivery.Should().NotBeNull();
+
+            _unitOfWork.CommitTransaction();
+
+            _unitOfWork.Complete();
+
+            var firstDeliveryCreated = _unitOfWork.DeliveryRepository.GetById(firstDelivery.Id);
+
+            firstDeliveryCreated.Should().NotBeNull();
+
+            var secondDeliveryCreated = _unitOfWork.DeliveryRepository.GetById(secondDelivery.Id);
 
             secondDeliveryCreated.Should().NotBeNull();
         }

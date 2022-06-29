@@ -1,4 +1,3 @@
-using AutoMapper;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using NSUOW.Persistence.Contracts;
@@ -11,7 +10,6 @@ namespace NSUOW.Persistence.Tests
 {
     public class PackagesTests : BaseTest
     {
-
         private ServiceProvider _serviceProvider;
 
         [SetUp]
@@ -20,16 +18,14 @@ namespace NSUOW.Persistence.Tests
             _serviceProvider = Bootstrapper.Bind();
 
             _unitOfWork = _serviceProvider.GetRequiredService<IUnitOfWork>();
-
-            _mapper = _serviceProvider.GetRequiredService<IMapper>();
         }
 
         [Test]
         public async Task Package_PackageGetById_ReturnPackageWithDeliveryAsync()
         {
-            var delivery = await GetAndAssertDeliveryAsync(GetBarcode());
+            var dummyDelivery = await GetAndAssertDeliveryAsync();
 
-            var package = await _unitOfWork.PackageRepository.QueryFirstAsync(x => x.DeliveryId == delivery.Id);
+            var package = await _unitOfWork.PackageRepository.QueryFirstAsync(x => x.DeliveryId == dummyDelivery.Id);
 
             package.Should().NotBeNull();
         }
