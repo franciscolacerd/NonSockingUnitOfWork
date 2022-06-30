@@ -4,8 +4,8 @@ using NSUOW.Application.DTOs.Common;
 using NSUOW.Application.Extensions;
 using NSUOW.Application.Models.Pagination;
 using NSUOW.Domain.Common;
+using NSUOW.Persistence.Common;
 using NSUOW.Persistence.Contracts;
-using NSUOW.Persistence.Repositories.Common;
 using System.Linq.Expressions;
 
 namespace NSUOW.Persistence.Repositories
@@ -71,6 +71,7 @@ namespace NSUOW.Persistence.Repositories
 
             _dbContext.Remove(entitytoDelete);
         }
+
         public void Delete(int id)
         {
             var entitytoDelete = GetById(id);
@@ -105,7 +106,6 @@ namespace NSUOW.Persistence.Repositories
 
             return await _dbContext
                 .Set<TEntity>()
-                //.AsNoTracking()
                 .Where(x => id.Equals(EF.Property<long>(x, key)))
                 .FirstOrDefaultAsync();
         }
@@ -118,7 +118,6 @@ namespace NSUOW.Persistence.Repositories
 
             return _dbContext
                 .Set<TEntity>()
-                //.AsNoTracking()
                 .Where(x => id.Equals(EF.Property<long>(x, key)))
                 .FirstOrDefault();
         }

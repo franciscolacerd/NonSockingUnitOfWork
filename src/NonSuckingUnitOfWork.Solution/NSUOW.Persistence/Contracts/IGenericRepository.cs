@@ -1,7 +1,7 @@
 ﻿using NSUOW.Application.DTOs.Common;
 using NSUOW.Application.Models.Pagination;
 using NSUOW.Domain.Common;
-using NSUOW.Persistence.Repositories.Common;
+using NSUOW.Persistence.Common;
 using System.Linq.Expressions;
 
 namespace NSUOW.Persistence.Contracts
@@ -11,7 +11,6 @@ namespace NSUOW.Persistence.Contracts
         where TDto : BaseDto
         where TContext : BaseDbContext
     {
-
         Task<TEntity> AddAsync(TEntity entity);
 
         TEntity Add(TEntity entity);
@@ -33,6 +32,7 @@ namespace NSUOW.Persistence.Contracts
         void Update(TEntity entity);
 
         Task<IReadOnlyList<TEntity>> QueryAsync(Expression<Func<TEntity, bool>>? predicate = null);
+
         IReadOnlyList<TEntity> Query(Expression<Func<TEntity, bool>>? predicate = null);
 
         Task<IReadOnlyList<TEntity>> QueryAsync(

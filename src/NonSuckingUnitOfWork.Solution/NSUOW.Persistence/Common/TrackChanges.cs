@@ -1,4 +1,4 @@
-﻿namespace NSUOW.Persistence.Repositories.Common
+﻿namespace NSUOW.Persistence.Common
 {
     public enum TrackChanges
     {

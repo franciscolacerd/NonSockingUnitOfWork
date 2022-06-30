@@ -2,7 +2,7 @@
 using NSUOW.Domain.Common;
 using System.Linq.Expressions;
 
-namespace NSUOW.Persistence.Repositories.Common
+namespace NSUOW.Persistence.Common
 {
     public class BaseRepository<TEntity, TContext>
            where TEntity : BaseDomainEntity
