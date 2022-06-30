@@ -1,4 +1,4 @@
-# Non Sucking Unit Of Work
+# Non Sucking Unit Of Work - .NET 6
 
 Tired of the same old c# unit of work? Here is a so generic unit of work that I doubt that it works (joking!).
 
